@@ -39,7 +39,18 @@ public class LyricBot {
 		client.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26");
 		client.setPrefix(prefix);
 		
-		//TODO: add commands
+		//non-hidden commands
+		client.addCommands(
+				new Hello(),
+				new Help(),
+				new Ping(),
+				new ServerInfo(),
+				new Support());
+		
+		//hidden commands
+		client.addCommands(
+				new Shutdown(),
+				new Test());
 		
 		try {
 			new JDABuilder(AccountType.BOT)

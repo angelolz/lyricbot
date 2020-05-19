@@ -22,7 +22,7 @@ public class ServerInfo extends Command{
 		info.setThumbnail(event.getGuild().getIconUrl());
 
 		//Body
-		info.addField("Owner", "<:angel:561290194951864341> " + event.getGuild().getOwner().getUser().getName() + "#" + event.getGuild().getOwner().getUser().getDiscriminator(), true);
+		info.addField("Owner", event.getGuild().getOwner().getUser().getName() + "#" + event.getGuild().getOwner().getUser().getDiscriminator(), true);
 		info.addField("Server ID", event.getGuild().getId(), true);
 		info.addField("Region", event.getGuild().getRegionRaw(), true);
 		info.addField("Nitro Boosters", event.getGuild().getBoostCount() + " boosts at Level " + getBoostLevel(event), true);
@@ -43,21 +43,19 @@ public class ServerInfo extends Command{
 		if(event.getGuild().getBannerUrl() == null) {
 			info.addField("Server Banner", "none", true);
 		}else {
-			info.addField("Server Banner", event.getGuild().getBannerUrl(), true);
+			info.addField("Server Banner", "[Link](" + event.getGuild().getBannerUrl() + ")", true);
 		}
 
 		if(event.getGuild().getSplashUrl() == null) {
 			info.addField("Invite Screen", "none", true);
 		}else {
-			info.addField("Invite Screen", event.getGuild().getSplashUrl(), true);
+			info.addField("Invite Screen", "[Link](" + event.getGuild().getSplashUrl() + ")", true);
 		}
 
 		//Footer
-		info.setFooter("Created by Angelolz#6969 | Version " + LyricBot.getVersion(), LyricBot.jda.getUserById("189690228292845568").getAvatarUrl());
+		info.setFooter("Created by Angelolz#6969 | Version " + LyricBot.getVersion(), event.getJDA().getUserById("189690228292845568").getAvatarUrl());
 
-		event.getChannel().sendTyping().queue();
-		event.getChannel().sendMessage(info.build()).queue();
-	
+		event.reply(info.build());
 	}
 	
 	private String getBoostLevel(CommandEvent event) {
