@@ -38,8 +38,7 @@ public class Hello extends Command{
 			lnr.close();
 			scanner.close();
 
-			event.getChannel().sendTyping().queue();
-			event.getChannel().sendMessage(lines[rng.nextInt(lineCount)]).queue();
+			event.reply(lines[rng.nextInt(lineCount)]);
 		}catch (FileNotFoundException e){
 			e.printStackTrace();
 		}catch (IOException e) {

@@ -22,7 +22,7 @@ import net.dv8tion.jda.api.exceptions.RateLimitedException;
 public class LyricBot {
 	public static JDA jda;
 	public static String prefix = "lb!";
-	static String version = "v1.1";
+	static String version = "v1.1.1";
 	
 	//main method
 	@SuppressWarnings("deprecation")
