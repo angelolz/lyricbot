@@ -14,7 +14,6 @@ public class Test extends Command{
 	
 	@Override
 	protected void execute(CommandEvent event) {
-		// TODO Auto-generated method stub
 		
 	}
 
