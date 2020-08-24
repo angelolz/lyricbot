@@ -12,12 +12,12 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 
 import commands.*;
 
-import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 public class LyricBot {
 	public static JDA jda;
@@ -25,7 +25,6 @@ public class LyricBot {
 	static String version = "v1.1.2";
 	
 	//main method
-	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException{
 		List<String> list = Files.readAllLines(Paths.get("config.txt"));
 		String token = list.get(0);
@@ -54,8 +53,8 @@ public class LyricBot {
 				new Test());
 		
 		try {
-			new JDABuilder(AccountType.BOT)
-				.setToken(token)
+			JDABuilder.createDefault(token)
+				.enableIntents(GatewayIntent.GUILD_MEMBERS)
 				.setStatus(OnlineStatus.DO_NOT_DISTURB)
 				.setActivity(Activity.playing("loading.."))
 				.addEventListeners(waiter, client.build())
