@@ -6,15 +6,19 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import lyricbot.LyricBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 
-public class ServerInfo extends Command{
-	public ServerInfo() {
+public class ServerInfo extends Command
+{
+	public ServerInfo()
+	{
 		this.name = "serverinfo";
 		this.help = "Displays info about this server.";
 		this.guildOnly = true;
 		this.cooldown = 3;
 	}
+
 	@Override
-	protected void execute(CommandEvent event) {
+	protected void execute(CommandEvent event)
+	{
 		EmbedBuilder info = new EmbedBuilder();
 		info.setColor(0x3789cc);
 		//Header
@@ -40,15 +44,24 @@ public class ServerInfo extends Command{
 						event.getGuild().getTimeCreated().getHour() + ":" +
 						event.getGuild().getTimeCreated().getMinute() + ":" +
 						event.getGuild().getTimeCreated().getSecond(), true);
-		if(event.getGuild().getBannerUrl() == null) {
+
+		if(event.getGuild().getBannerUrl() == null)
+		{
 			info.addField("Server Banner", "none", true);
-		}else {
+		}
+
+		else
+		{
 			info.addField("Server Banner", "[Link](" + event.getGuild().getBannerUrl() + ")", true);
 		}
 
-		if(event.getGuild().getSplashUrl() == null) {
+		if(event.getGuild().getSplashUrl() == null)
+		{
 			info.addField("Invite Screen", "none", true);
-		}else {
+		}
+
+		else
+		{
 			info.addField("Invite Screen", "[Link](" + event.getGuild().getSplashUrl() + ")", true);
 		}
 
@@ -57,13 +70,21 @@ public class ServerInfo extends Command{
 
 		event.reply(info.build());
 	}
-	
-	private String getBoostLevel(CommandEvent event) {
-		if(event.getGuild().getBoostCount() <= 1) {
+
+	private String getBoostLevel(CommandEvent event)
+	{
+		if(event.getGuild().getBoostCount() <= 1)
+		{
 			return "0";
-		}else if(event.getGuild().getBoostCount() <= 14) {
+		}
+
+		else if(event.getGuild().getBoostCount() <= 14)
+		{
 			return "1";
-		}else {
+		}
+
+		else
+		{
 			return "2";
 		}
 	}

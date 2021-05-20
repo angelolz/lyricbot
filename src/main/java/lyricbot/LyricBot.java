@@ -1,9 +1,8 @@
 package lyricbot;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
+import java.util.Properties;
 
 import javax.security.auth.login.LoginException;
 
@@ -11,7 +10,7 @@ import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 
 import commands.*;
-
+import listeners.Listener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -19,56 +18,72 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
-public class LyricBot {
+public class LyricBot
+{
 	public static JDA jda;
 	public static String prefix = "lb!";
-	static String version = "v1.1.2";
-	
+	static String version = "v1.2";
+
 	//main method
-	public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException{
-		List<String> list = Files.readAllLines(Paths.get("config.txt"));
-		String token = list.get(0);
-		String ownerId = list.get(1);
+	public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException
+	{
+		Properties prop = new Properties();
+		FileInputStream propFile = new FileInputStream("config.properties");
+		prop.load(propFile);
+		String token = prop.getProperty("bot_token");
+		String ownerId = prop.getProperty("owner_id");
 		EventWaiter waiter = new EventWaiter();
 		CommandClientBuilder client = new CommandClientBuilder();
-		
+
 		client.useHelpBuilder(false);
 		client.setActivity(Activity.playing("bwao wub wub | lb!help"));
 		client.setOwnerId(ownerId);
 		client.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26");
 		client.setPrefix(prefix);
-		
+
 		//non-hidden commands
 		client.addCommands(
 				new Hello(),
 				new Help(),
 				new Ping(),
 				new ServerInfo(),
-				new Support(),
-				new Round());
-		
+				new Support());
+
 		//hidden commands
 		client.addCommands(
-				new Shutdown(),
+				new CheckRoles(),
+				new Close(),
 				new Test());
-		
-		try {
+
+		try
+		{
 			JDABuilder.createDefault(token)
-				.enableIntents(GatewayIntent.GUILD_MEMBERS)
-				.setStatus(OnlineStatus.DO_NOT_DISTURB)
-				.setActivity(Activity.playing("loading.."))
-				.addEventListeners(waiter, client.build())
-				.build();
-		}catch(LoginException e){
+			.enableIntents(GatewayIntent.GUILD_MEMBERS)
+			.setStatus(OnlineStatus.DO_NOT_DISTURB)
+			.setActivity(Activity.playing("loading.."))
+			.addEventListeners(waiter, new Listener(), client.build())
+			.build();
+		}
+
+		catch(LoginException e)
+		{
 			System.out.println("Unable to login with bot token.");
 			e.printStackTrace();
-		}catch(Exception e) {
+		}
+
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
 	}
-	
-	public static String getVersion() {
+
+	public static String getVersion()
+	{
 		return version;
 	}
 
+	public static String getPrefix()
+	{
+		return prefix;
+	}
 }

@@ -1,5 +1,5 @@
 /target/
-config.txt
+*.properties
 .settings/
 
 *.class
