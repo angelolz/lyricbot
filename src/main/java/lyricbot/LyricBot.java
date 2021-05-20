@@ -22,7 +22,7 @@ public class LyricBot
 {
 	public static JDA jda;
 	public static String prefix = "lb!";
-	static String version = "v1.2";
+	static String version = "v1.3";
 
 	//main method
 	public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException
@@ -46,6 +46,8 @@ public class LyricBot
 				new Hello(),
 				new Help(),
 				new Ping(),
+				new Search(),
+				new Random(),
 				new ServerInfo(),
 				new Support());
 
