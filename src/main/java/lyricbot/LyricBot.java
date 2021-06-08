@@ -6,6 +6,9 @@ import java.util.Properties;
 
 import javax.security.auth.login.LoginException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 
@@ -20,13 +23,17 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 public class LyricBot
 {
+	private static Logger logger;
 	public static JDA jda;
 	public static String prefix = "lb!";
-	static String version = "v1.3.1";
+	static String version = "v1.4";
 
 	//main method
 	public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException
 	{
+		//logger
+		logger = LoggerFactory.getLogger(LyricBot.class);
+
 		Properties prop = new Properties();
 		FileInputStream propFile = new FileInputStream("config.properties");
 		prop.load(propFile);
@@ -87,5 +94,10 @@ public class LyricBot
 	public static String getPrefix()
 	{
 		return prefix;
+	}
+	
+	public static Logger getLogger() 
+	{
+		return logger;
 	}
 }

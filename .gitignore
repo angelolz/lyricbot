@@ -1,6 +1,7 @@
 /target/
 *.properties
 .settings/
+programs/
 
 *.class
 *.log

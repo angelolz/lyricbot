@@ -40,9 +40,14 @@ public class SearchResults
 			public ThumbnailList thumbnails;
 		}
 		
+		public class ContentDetails
+		{
+			public String duration;
+		}
+		
 		public Id id;
 		public Snippet snippet;
-		
+		public ContentDetails contentDetails;
 	}
 	
 	public PageInfo pageInfo;

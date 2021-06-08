@@ -38,7 +38,6 @@ public class Search extends Command
 			String q = URLEncoder.encode(event.getArgs(), StandardCharsets.UTF_8);
 			String url = String.format("https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=%s&type=video&videoDimension=any&key=%s",
 					q, apiKey);
-			System.out.println(url);
 
 			String json = ReadURL.readURL(url);
 			Gson gson = new Gson();
@@ -107,8 +106,5 @@ public class Search extends Command
 				e.printStackTrace();
 			}
 		}
-
-
 	}
-
 }
