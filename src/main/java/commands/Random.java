@@ -12,6 +12,7 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 
 import jsonObjects.*;
+import methods.Description;
 import methods.ReadURL;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -33,7 +34,7 @@ public class Random extends Command
 			FileInputStream propFile = new FileInputStream("config.properties");
 			prop.load(propFile);
 			String apiKey = prop.getProperty("yt_api_key");
-			String url = String.format("https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=&playlistId=PLllRHMFuhhnicr4P7nSF-1vetLmRgPPrI&key=%s",
+			String url = String.format("https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=100&pageToken=&playlistId=PLIMIDL2lIgpA4VzVBrDvfIGsj9kaP22cO&key=%s",
 					apiKey);
 
 			String json = ReadURL.readURL(url);
@@ -43,7 +44,7 @@ public class Random extends Command
 
 			while(!result.nextPageToken.isEmpty())
 			{
-				String nextUrl = String.format("https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=%s&playlistId=PLllRHMFuhhnicr4P7nSF-1vetLmRgPPrI&key=%s",
+				String nextUrl = String.format("https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=100&pageToken=%s&playlistId=PLIMIDL2lIgpA4VzVBrDvfIGsj9kaP22cO&key=%s",
 						result.nextPageToken, apiKey);
 				String nextJson = ReadURL.readURL(nextUrl);
 				PlaylistResults nextPageResult = gson.fromJson(nextJson, PlaylistResults.class);
@@ -66,37 +67,37 @@ public class Random extends Command
 
 			if(!result.getThumbnails(index).defaultThumb.url.isEmpty())
 			{
-				thumbnailString += String.format("[default](%s)\n", result.getThumbnails(index).defaultThumb.url);
+				thumbnailString += String.format("[default](%s) ", result.getThumbnails(index).defaultThumb.url);
 			}
 
 			if(!result.getThumbnails(index).standard.url.isEmpty())
 			{
-				thumbnailString += String.format("[standard](%s)\n", result.getThumbnails(index).standard.url);
+				thumbnailString += String.format("[standard](%s) ", result.getThumbnails(index).standard.url);
 			}
 
 			if(!result.getThumbnails(index).medium.url.isEmpty())
 			{
-				thumbnailString += String.format("[medium](%s)\n", result.getThumbnails(index).medium.url);
+				thumbnailString += String.format("[medium](%s) ", result.getThumbnails(index).medium.url);
 			}
 
 			if(!result.getThumbnails(index).high.url.isEmpty())
 			{
-				thumbnailString += String.format("[high](%s)\n", result.getThumbnails(index).high.url);
+				thumbnailString += String.format("[high](%s) ", result.getThumbnails(index).high.url);
 			}
 
 			if(!result.getThumbnails(index).maxres.url.isEmpty())
 			{
-				thumbnailString += String.format("[maxres](%s)\n", result.getThumbnails(index).maxres.url);
+				thumbnailString += String.format("[maxres](%s) ", result.getThumbnails(index).maxres.url);
 			}
 
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setColor(0xc4302b);
 			embed.addField("Title", result.getVideo(index).snippet.title, false);
-			embed.addField("Description", result.getVideo(index).snippet.description, false);
+			embed.addField("Description", Description.shorten(result.getVideo(index).snippet.description), false);
 			embed.addField("Posted on", convertedDate, true);
 			embed.addField("Thumbnail(s)", thumbnailString.isEmpty() ? "*None*" : thumbnailString, true);
 			embed.setThumbnail(result.getThumbnails(index).defaultThumb.url);
-			embed.setFooter("This video was randomly chosen from the \"Lyrics I hate\" playlist.");
+			embed.setFooter("This video was randomly chosen from a playlist made by specific curators.");
 
 			String message = String.format("Here's a random lyric video:\n"
 					+ "**https://www.youtube.com/watch?v=%s**", videos.get(index).snippet.resourceId.videoId);

@@ -102,7 +102,7 @@ public class Listener extends ListenerAdapter
 					
 					else
 					{
-						ffprobe = new FFprobe("programs/ffprobe");
+						ffprobe = new FFprobe("programs/ffmpeg/ffprobe");
 					}
 					
 					FFmpegProbeResult probeResult = ffprobe.probe(url);

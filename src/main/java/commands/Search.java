@@ -13,6 +13,7 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 
 import jsonObjects.*;
+import methods.Description;
 import methods.ReadURL;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -74,7 +75,7 @@ public class Search extends Command
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setColor(0xc4302b);
 				embed.addField("Title", result.getVideo().snippet.title, false);
-				embed.addField("Description", result.getVideo().snippet.description, false);
+				embed.addField("Description", Description.shorten(result.getVideo().snippet.description), false);
 				embed.addField("Posted on", convertedDate, true);
 				embed.addField("Thumbnail(s)", thumbnailString.isEmpty() ? "*None*" : thumbnailString, true);
 				embed.setThumbnail(result.getThumbnails().defaultThumb.url);
