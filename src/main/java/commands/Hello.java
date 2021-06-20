@@ -25,7 +25,7 @@ public class Hello extends Command
 	{
 		try
 		{
-			File helloTxt = new File("src/main/resources/hello.txt");
+			File helloTxt = new File("hello.txt");
 			Random rng = new Random();
 			int lineCount = 0;
 			FileReader fr = new FileReader(helloTxt);
