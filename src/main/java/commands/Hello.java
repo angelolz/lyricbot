@@ -46,12 +46,7 @@ public class Hello extends Command
 			event.reply(lines[rng.nextInt(lineCount)]);
 		}
 
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-
-		catch (IOException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

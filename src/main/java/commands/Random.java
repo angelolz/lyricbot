@@ -48,10 +48,7 @@ public class Random extends Command
 						result.nextPageToken, apiKey);
 				String nextJson = ReadURL.readURL(nextUrl);
 				PlaylistResults nextPageResult = gson.fromJson(nextJson, PlaylistResults.class);
-				for(jsonObjects.PlaylistResults.VideoInfo video: nextPageResult.items)
-				{
-					videos.add(video);
-				}
+				videos.addAll(nextPageResult.items);
 
 				result.setNextPage(nextPageResult.nextPageToken);
 			}
@@ -63,40 +60,12 @@ public class Random extends Command
 			SimpleDateFormat format2 = new SimpleDateFormat("MMMM dd, yyyy hh:mm:ss a");
 			Date date = format1.parse(result.getVideo(index).snippet.publishedAt);
 			String convertedDate = format2.format(date);
-			String thumbnailString = "";
-
-			if(!result.getThumbnails(index).defaultThumb.url.isEmpty())
-			{
-				thumbnailString += String.format("[default](%s) ", result.getThumbnails(index).defaultThumb.url);
-			}
-
-			if(!result.getThumbnails(index).standard.url.isEmpty())
-			{
-				thumbnailString += String.format("[standard](%s) ", result.getThumbnails(index).standard.url);
-			}
-
-			if(!result.getThumbnails(index).medium.url.isEmpty())
-			{
-				thumbnailString += String.format("[medium](%s) ", result.getThumbnails(index).medium.url);
-			}
-
-			if(!result.getThumbnails(index).high.url.isEmpty())
-			{
-				thumbnailString += String.format("[high](%s) ", result.getThumbnails(index).high.url);
-			}
-
-			if(!result.getThumbnails(index).maxres.url.isEmpty())
-			{
-				thumbnailString += String.format("[maxres](%s) ", result.getThumbnails(index).maxres.url);
-			}
 
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setColor(0xc4302b);
 			embed.addField("Title", result.getVideo(index).snippet.title, false);
 			embed.addField("Description", Description.shorten(result.getVideo(index).snippet.description), false);
 			embed.addField("Posted on", convertedDate, true);
-			embed.addField("Thumbnail(s)", thumbnailString.isEmpty() ? "*None*" : thumbnailString, true);
-			embed.setThumbnail(result.getThumbnails(index).defaultThumb.url);
 			embed.setFooter("This video was randomly chosen from a playlist made by specific curators.");
 
 			String message = String.format("Here's a random lyric video:\n"

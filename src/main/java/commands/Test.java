@@ -41,7 +41,7 @@ public class Test extends Command
 				+ " Unfortunately, we cannot do them for free.", false);
 		embed.addBlankField(false);
 		embed.addField(":zero: | yo sub to me and ivan lol", "it would be sick af if you sub to "
-				+ "[**Angelolz**](http://youtube.com/c/angelolz1) and [**Ivan**](https://www.youtube.com/user/TSalvaChannel) :)", false);
+				+ "[**Angelolz**](https://youtube.com/c/angelolz1) and [**Ivan**](https://www.youtube.com/user/TSalvaChannel) :)", false);
 		embed.setFooter("Failure to follow any of the above rules will result in a kick or ban.");
 		
 		EmbedBuilder embed2 = new EmbedBuilder();

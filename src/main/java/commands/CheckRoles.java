@@ -127,7 +127,7 @@ public class CheckRoles extends Command
 	private String convertTime(long ms)
 	{
 		int minutes, seconds;
-		String result = "";
+		String result;
 
 		seconds = (int) ((ms / 1000) % 60);
 		minutes = (int) ((ms / (1000*60)));

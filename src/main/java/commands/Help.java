@@ -9,8 +9,6 @@ import net.dv8tion.jda.api.Permission;
 
 public class Help extends Command
 {
-	protected static int commandCount;
-
 	public Help()
 	{
 		this.cooldown = 3;
@@ -24,8 +22,6 @@ public class Help extends Command
 	@Override
 	protected void execute(CommandEvent event)
 	{
-		commandCount++;
-
 		//creates new embed
 		EmbedBuilder embed = new EmbedBuilder();
 
@@ -50,9 +46,9 @@ public class Help extends Command
 							if(command.getAliases().length > 0)
 							{
 								String[] aliases = command.getAliases();
-								for(int i = 0; i < aliases.length; i++)
+								for (String alias : aliases)
 								{
-									commandName = commandName.concat("/" + aliases[i]);
+									commandName = commandName.concat("/" + alias);
 								}
 							}
 
@@ -62,11 +58,6 @@ public class Help extends Command
 
 					event.reply(embed.build());
 				});
-	}
-
-	public static int getCommandCount()
-	{
-		return commandCount;
 	}
 }
 

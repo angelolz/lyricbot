@@ -33,9 +33,9 @@ public class ServerInfo extends Command
 		info.addField("Members", Integer.toString(event.getGuild().getMemberCount()), true);
 		info.addField("Emojis", Integer.toString(event.getGuild().getEmotes().size()), true);
 		info.addField("Categories", Integer.toString(event.getGuild().getCategories().size()), true);
-		info.addField("Channels", 
-				Integer.toString(event.getGuild().getChannels().size()) + " text / " + 
-						Integer.toString(event.getGuild().getVoiceChannels().size()) + " voice", true);
+		info.addField("Channels",
+			event.getGuild().getChannels().size() + " text / " +
+					event.getGuild().getVoiceChannels().size() + " voice", true);
 		info.addField("Roles", Integer.toString(event.getGuild().getRoles().size()), true);
 		info.addField("Date Created",
 				event.getGuild().getTimeCreated().getMonthValue() + "/" + 

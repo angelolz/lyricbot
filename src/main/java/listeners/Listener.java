@@ -31,7 +31,7 @@ public class Listener extends ListenerAdapter
 		{
 			try
 			{
-				final String PATTERN = "https?:\\/\\/(www\\.)?([-a-zA-Z0-9@:%._\\\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6})\\b([-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)";
+				final String PATTERN = "https?://(www\\.)?([-a-zA-Z0-9@:%._\\\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6})\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)";
 				Pattern p = Pattern.compile(PATTERN, Pattern.CASE_INSENSITIVE);
 				Matcher m = p.matcher(event.getMessage().getContentRaw());
 				String url = "";
@@ -53,7 +53,7 @@ public class Listener extends ListenerAdapter
 
 					else if(m.group(2).contains("youtu.be") || m.group(2).contains("youtube.com"))
 					{
-						final String YOUTUBE_PATTERN = "(.*?)(^|\\/|v=)([a-z0-9_-]{11})(.*)?";
+						final String YOUTUBE_PATTERN = "(.*?)(^|/|v=)([a-z0-9_-]{11})(.*)?";
 						Pattern yt_p = Pattern.compile(YOUTUBE_PATTERN, Pattern.CASE_INSENSITIVE);
 						Matcher yt_m = yt_p.matcher(event.getMessage().getContentRaw());
 
@@ -80,7 +80,7 @@ public class Listener extends ListenerAdapter
 								{
 									event.getMessage().delete().queue();
 									event.getChannel().sendMessage(":x: | " + event.getAuthor().getAsMention() + ", your video is shorter than 8 seconds. Please post a longer preview of your video.")
-									.delay(10, TimeUnit.SECONDS).flatMap(Message::delete).queue();;
+									.delay(10, TimeUnit.SECONDS).flatMap(Message::delete).queue();
 								}
 							}
 						}
@@ -110,11 +110,11 @@ public class Listener extends ListenerAdapter
 
 					if(format.format_long_name.equalsIgnoreCase("QuickTime / MOV"))
 					{
-						if(format.duration < 8.5)
+						if(format.duration < 8)
 						{
 							event.getMessage().delete().queue();
 							event.getChannel().sendMessage(":x: | " + event.getAuthor().getAsMention() + ", your video is shorter than 8 seconds. Please post a longer preview of your video.")
-							.delay(10, TimeUnit.SECONDS).flatMap(Message::delete).queue();;
+							.delay(10, TimeUnit.SECONDS).flatMap(Message::delete).queue();
 						}
 
 						else
@@ -123,7 +123,7 @@ public class Listener extends ListenerAdapter
 							{
 								event.getMessage().delete().queue();
 								event.getChannel().sendMessage(":x: | " + event.getAuthor().getAsMention() + ", did you modify your mp4's duration?")
-								.delay(10, TimeUnit.SECONDS).flatMap(Message::delete).queue();;
+								.delay(10, TimeUnit.SECONDS).flatMap(Message::delete).queue();
 							}
 						}
 					}

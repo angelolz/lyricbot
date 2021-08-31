@@ -24,12 +24,11 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 public class LyricBot
 {
 	private static Logger logger;
-	public static JDA jda;
-	public static String prefix = "lb!";
-	static String version = "v1.4.2";
+	public static final String prefix = "lb!";
+	static final String version = "v1.4.3";
 
 	//main method
-	public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException
+	public static void main(String[] args) throws IOException, IllegalArgumentException
 	{
 		//logger
 		logger = LoggerFactory.getLogger(LyricBot.class);

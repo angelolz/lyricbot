@@ -13,9 +13,9 @@ public class ReadURL
 		URL url = new URL(string);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.connect();
-		try(BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));)
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream())))
 		{
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			int read;
 			char[] chars = new char[1024];
 			while ((read = reader.read(chars)) != -1)
