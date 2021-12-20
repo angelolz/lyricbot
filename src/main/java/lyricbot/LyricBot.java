@@ -25,7 +25,7 @@ public class LyricBot
 {
 	private static Logger logger;
 	public static final String prefix = "lb!";
-	static final String version = "v1.4.3";
+	static final String version = "v1.4.4";
 
 	//main method
 	public static void main(String[] args) throws IOException, IllegalArgumentException
