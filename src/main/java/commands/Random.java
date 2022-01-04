@@ -83,9 +83,7 @@ public class Random extends Command
 		catch(Exception e)
 		{
 			if(e.toString().contains("403"))
-			{
 				event.reply(":x: | Sorry, we've reached the quota limit for searching videos today. Please try again tomorrow.");
-			}
 
 			else
 			{

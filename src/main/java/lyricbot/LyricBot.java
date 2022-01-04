@@ -14,18 +14,16 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 
 import commands.*;
 import listeners.Listener;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 public class LyricBot
 {
 	private static Logger logger;
 	public static final String prefix = "lb!";
-	static final String version = "v1.4.4";
+	static final String version = "v1.4.5";
 
 	//main method
 	public static void main(String[] args) throws IOException, IllegalArgumentException
@@ -61,7 +59,7 @@ public class LyricBot
 		client.addCommands(
 				new CheckRoles(),
 				new Close(),
-				new Test());
+				new Rules());
 
 		try
 		{

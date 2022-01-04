@@ -12,80 +12,57 @@ public class ServerInfo extends Command
 	{
 		this.name = "serverinfo";
 		this.help = "Displays info about this server.";
-		this.guildOnly = true;
 		this.cooldown = 3;
 	}
 
 	@Override
 	protected void execute(CommandEvent event)
 	{
-		EmbedBuilder info = new EmbedBuilder();
-		info.setColor(0x3789cc);
+		EmbedBuilder embed = new EmbedBuilder();
+		embed.setColor(0x3789cc);
+
 		//Header
-		info.setTitle(event.getGuild().getName());
-		info.setThumbnail(event.getGuild().getIconUrl());
+		embed.setTitle(event.getGuild().getName());
+		embed.setThumbnail(event.getGuild().getIconUrl());
 
 		//Body
-		info.addField("Owner", event.getGuild().getOwner().getUser().getName() + "#" + event.getGuild().getOwner().getUser().getDiscriminator(), true);
-		info.addField("Server ID", event.getGuild().getId(), true);
-		info.addField("Region", event.getGuild().getRegionRaw(), true);
-		info.addField("Nitro Boosters", event.getGuild().getBoostCount() + " boosts at Level " + getBoostLevel(event), true);
-		info.addField("Members", Integer.toString(event.getGuild().getMemberCount()), true);
-		info.addField("Emojis", Integer.toString(event.getGuild().getEmotes().size()), true);
-		info.addField("Categories", Integer.toString(event.getGuild().getCategories().size()), true);
-		info.addField("Channels",
+		embed.addField("Owner", event.getGuild().getOwner().getUser().getName() + "#" + event.getGuild().getOwner().getUser().getDiscriminator(), true);
+		embed.addField("Server ID", event.getGuild().getId(), true);
+		embed.addBlankField(true);
+
+		embed.addField("Nitro Boosters", event.getGuild().getBoostCount() + " boosts at Level " + getBoostLevel(event), true);
+		embed.addField("Members", Integer.toString(event.getGuild().getMemberCount()), true);
+		embed.addField("Emojis", Integer.toString(event.getGuild().getEmotes().size()), true);
+
+		embed.addField("Categories", Integer.toString(event.getGuild().getCategories().size()), true);
+		embed.addField("Channels",
 			event.getGuild().getChannels().size() + " text / " +
 					event.getGuild().getVoiceChannels().size() + " voice", true);
-		info.addField("Roles", Integer.toString(event.getGuild().getRoles().size()), true);
-		info.addField("Date Created",
-				event.getGuild().getTimeCreated().getMonthValue() + "/" + 
-						event.getGuild().getTimeCreated().getDayOfMonth() + "/" + 
-						event.getGuild().getTimeCreated().getYear() + " " +
-						event.getGuild().getTimeCreated().getHour() + ":" +
-						event.getGuild().getTimeCreated().getMinute() + ":" +
-						event.getGuild().getTimeCreated().getSecond(), true);
+		embed.addField("Roles", Integer.toString(event.getGuild().getRoles().size()), true);
 
-		if(event.getGuild().getBannerUrl() == null)
-		{
-			info.addField("Server Banner", "none", true);
-		}
-
-		else
-		{
-			info.addField("Server Banner", "[Link](" + event.getGuild().getBannerUrl() + ")", true);
-		}
-
-		if(event.getGuild().getSplashUrl() == null)
-		{
-			info.addField("Invite Screen", "none", true);
-		}
-
-		else
-		{
-			info.addField("Invite Screen", "[Link](" + event.getGuild().getSplashUrl() + ")", true);
-		}
+		embed.addField("Date Created",
+			String.format("%d/%d/%d %d:%d:%d",
+			event.getGuild().getTimeCreated().getMonthValue(),
+			event.getGuild().getTimeCreated().getDayOfMonth(),
+			event.getGuild().getTimeCreated().getYear(),
+			event.getGuild().getTimeCreated().getHour(),
+			event.getGuild().getTimeCreated().getMinute(),
+			event.getGuild().getTimeCreated().getSecond()),
+			true);
+		embed.addField("Server Banner", event.getGuild().getBannerUrl() == null ? "none" : "[Link](" + event.getGuild().getBannerUrl() + ")", true);
+		embed.addField("Invite Screen", event.getGuild().getSplashUrl() == null ? "none" : "[Link](" + event.getGuild().getSplashUrl() + ")", true);
 
 		//Footer
-		info.setFooter("Created by Angelolz#6969 | Version " + LyricBot.getVersion(), event.getJDA().getUserById("189690228292845568").getAvatarUrl());
+		embed.setFooter("Created by Angelolz#6969 | Version " + LyricBot.getVersion(), event.getJDA().getUserById("189690228292845568").getAvatarUrl());
 
-		event.reply(info.build());
+		event.reply(embed.build());
 	}
 
 	private String getBoostLevel(CommandEvent event)
 	{
-		if(event.getGuild().getBoostCount() <= 1)
-		{
-			return "0";
-		}
-
-		else if(event.getGuild().getBoostCount() <= 14)
-		{
-			return "1";
-		}
-
-		else
-		{
-			return "2";
-		}
+		if(event.getGuild().getBoostCount() < 2) return "0";
+		else if(event.getGuild().getBoostCount() < 7) return "1";
+		else if(event.getGuild().getBoostCount() < 14) return "2";
+		else return "3";
 	}
 }

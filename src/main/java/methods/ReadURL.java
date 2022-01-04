@@ -19,10 +19,7 @@ public class ReadURL
 			int read;
 			char[] chars = new char[1024];
 			while ((read = reader.read(chars)) != -1)
-			{
-				buffer.append(chars, 0, read); 
-			}
-
+				buffer.append(chars, 0, read);
 			return buffer.toString();
 		}
 	}

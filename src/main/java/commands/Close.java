@@ -8,10 +8,8 @@ public class Close extends Command
 	public Close()
 	{
 		this.name = "close";
-		this.help = "Shuts down the bot.";
-		this.guildOnly = true;
-		this.hidden = true;
 		this.ownerCommand = true;
+		this.hidden = true;
 	}
 
 	@Override

@@ -38,9 +38,7 @@ public class Listener extends ListenerAdapter
 
 				//if there is an attachment, get the url of it
 				if(event.getMessage().getAttachments().size() > 0)
-				{
 					url = event.getMessage().getAttachments().get(0).getUrl();
-				}
 
 				//if there is no attachment, check if there is a url given
 				else if(m.find())
@@ -87,24 +85,17 @@ public class Listener extends ListenerAdapter
 					}
 
 					else
-					{
 						url = m.group();
-					}
 				}
 
 				if(!url.isEmpty())
 				{
 					FFprobe ffprobe;
 					if(new File("programs/ffprobe.exe").exists())
-					{
 						ffprobe = new FFprobe("programs/ffprobe.exe");
-					}
-					
 					else
-					{
 						ffprobe = new FFprobe("programs/ffmpeg/ffprobe");
-					}
-					
+
 					FFmpegProbeResult probeResult = ffprobe.probe(url);
 					FFmpegFormat format = probeResult.getFormat();
 
@@ -133,9 +124,7 @@ public class Listener extends ListenerAdapter
 			catch(Exception e)
 			{
 				if(!e.toString().contains("ffprobe"))
-				{
 					LyricBot.getLogger().warn(e.toString());
-				}
 			}
 		}
 	}

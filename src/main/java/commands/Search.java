@@ -45,9 +45,7 @@ public class Search extends Command
 			SearchResults result = gson.fromJson(json, SearchResults.class);
 
 			if(result.pageInfo.totalResults == 0)
-			{
 				event.reply(":x: | Sorry, there weren't any videos that matched your search.");
-			}
 
 			else
 			{
@@ -58,19 +56,13 @@ public class Search extends Command
 				String thumbnailString = "";
 
 				if(!result.getThumbnails().defaultThumb.url.isEmpty())
-				{
 					thumbnailString += String.format("[default](%s)\n", result.getThumbnails().defaultThumb.url);
-				}
 
 				if(!result.getThumbnails().medium.url.isEmpty())
-				{
 					thumbnailString += String.format("[medium](%s)\n", result.getThumbnails().medium.url);
-				}
 
 				if(!result.getThumbnails().high.url.isEmpty())
-				{
 					thumbnailString += String.format("[high](%s)\n", result.getThumbnails().high.url);
-				}
 
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setColor(0xc4302b);
@@ -97,9 +89,7 @@ public class Search extends Command
 		catch(Exception e)
 		{
 			if(e.toString().contains("403"))
-			{
 				event.reply(":x: | Sorry, we've reached the quota limit for searching videos today. Please try again tomorrow.");
-			}
 
 			else
 			{

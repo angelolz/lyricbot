@@ -9,11 +9,10 @@ public class Ping extends Command
 {
 	public Ping()
 	{
-		this.aliases = new String[] {"pong"};
-		this.cooldown = 3;
-		this.guildOnly = true;
-		this.help = ":ping_pong: Pong!";
 		this.name = "ping";
+		this.aliases = new String[] {"pong"};
+		this.help = ":ping_pong: Pong!";
+		this.cooldown = 3;
 	}
 
 	@Override

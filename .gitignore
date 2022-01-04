@@ -2,6 +2,7 @@
 *.properties
 .settings/
 programs/
+roles/
 
 *.class
 *.log

@@ -16,7 +16,6 @@ public class Help extends Command
 		this.help = "Shows this help embed.";
 		this.name = "help";
 		this.botPermissions = new Permission[] {Permission.MESSAGE_EMBED_LINKS};
-
 	}
 
 	@Override

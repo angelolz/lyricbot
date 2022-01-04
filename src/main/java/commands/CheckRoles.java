@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import lyricbot.LyricBot;
 import org.apache.commons.io.FileUtils;
 
 import com.jagrosh.jdautilities.command.Command;
@@ -61,19 +62,13 @@ public class CheckRoles extends Command
 					{
 						//checks if they have any of the role separators
 						if(role.getId().equals("594557478923010048"))
-						{
 							hasSpecial = true;
-						}
 
 						else if(role.getId().equals("665624812390973481"))
-						{
 							hasVideo = true;
-						}
 
 						else if(role.getId().equals("600533152049528835"))
-						{
 							hasEvents = true;
-						}
 
 						if(!hasSpecial)
 						{
@@ -120,6 +115,7 @@ public class CheckRoles extends Command
 			catch(IOException e)
 			{
 				event.reply(":x: | There was an error in getting list of roles.");
+				LyricBot.getLogger().error("Error: {}", e.getMessage());
 			}
 		});
 	}
