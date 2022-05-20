@@ -13,7 +13,6 @@ import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 
 import commands.*;
-import listeners.Listener;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -23,7 +22,7 @@ public class LyricBot
 {
 	private static Logger logger;
 	public static final String prefix = "lb!";
-	static final String version = "v1.4.5";
+	static final String version = "v1.4.6";
 
 	//main method
 	public static void main(String[] args) throws IOException, IllegalArgumentException
@@ -67,7 +66,7 @@ public class LyricBot
 			.enableIntents(GatewayIntent.GUILD_MEMBERS)
 			.setStatus(OnlineStatus.DO_NOT_DISTURB)
 			.setActivity(Activity.playing("loading.."))
-			.addEventListeners(waiter, new Listener(), client.build())
+			.addEventListeners(waiter, client.build())
 			.build();
 		}
 
