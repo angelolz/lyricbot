@@ -18,7 +18,7 @@ public class Remove extends SlashCommand
     public Remove()
     {
         this.name = "remove";
-        this.help = "Remove your own link and/or watermarks.";
+        this.help = "Remove your own link and/or watermark.";
 
         List<OptionData> options = new ArrayList<>();
         options.add(new OptionData(OptionType.STRING, "remove", "What do you want to remove?", true)

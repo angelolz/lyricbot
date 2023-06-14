@@ -20,11 +20,11 @@ public class Set extends SlashCommand
     public Set()
     {
         this.name = "set";
-        this.help = "Set your own link and/or watermarks.";
+        this.help = "Set your own link and/or watermark.";
 
         List<OptionData> options = new ArrayList<>();
         options.add(new OptionData(OptionType.STRING, "link", "Link to your own YouTube channel or social media.", false));
-        options.add(new OptionData(OptionType.ATTACHMENT, "watermarks", "Image file of your own watermark, 2mb max file size, PNG only.", false));
+        options.add(new OptionData(OptionType.ATTACHMENT, "watermark", "Image file of your own watermark, 2mb max file size, PNG only.", false));
 
         this.options = options;
     }
@@ -34,9 +34,9 @@ public class Set extends SlashCommand
     {
         event.deferReply().queue();
 
-        if(event.optString("link") == null && event.optAttachment("watermarks") == null)
+        if(event.optString("link") == null && event.optAttachment("watermark") == null)
         {
-            event.getHook().sendMessage("❌ | at least set a link **OR** a watermarks l0ser").queue();
+            event.getHook().sendMessage("❌ | at least set a link **OR** a watermark l0ser").queue();
             return;
         }
 
@@ -55,16 +55,16 @@ public class Set extends SlashCommand
                 event.getHook().sendMessage(setLink(event.getUser().getId(), event.optString("link"))).queue();
         }
 
-        if(event.optAttachment("watermarks") != null)
+        if(event.optAttachment("watermark") != null)
         {
-            Message.Attachment attachment = event.optAttachment("watermarks");
+            Message.Attachment attachment = event.optAttachment("watermark");
             System.out.println();
             if(attachment.getSize() > 2097152)
                 event.getHook().sendMessage("❌ | Your image is over 2mb. Please try again.").queue();
             else if(!attachment.getContentType().equalsIgnoreCase("image/png"))
                 event.getHook().sendMessage("❌ | Only PNGs are accepted. Please try again").queue();
             else
-                setImage(event.getHook(), event.getUser().getId(), event.optAttachment("watermarks"));
+                setImage(event.getHook(), event.getUser().getId(), event.optAttachment("watermark"));
         }
     }
 
@@ -98,13 +98,13 @@ public class Set extends SlashCommand
         watermark.getProxy().downloadToFile(new File(fileName))
                  .thenAccept(file -> {
                      if(exists)
-                         hook.sendMessage("✅ | Your watermarks has been updated.").queue();
+                         hook.sendMessage("✅ | Your watermark has been updated.").queue();
                      else
-                         hook.sendMessage("✅ | Your watermarks has been saved.").queue();
+                         hook.sendMessage("✅ | Your watermark has been saved.").queue();
                  })
                  .exceptionally(t -> {
-                     LoggerManager.logError(new Exception(t), "setting watermarks");
-                     hook.sendMessage("❌ | There was an error saving your watermarks.").queue();
+                     LoggerManager.logError(new Exception(t), "setting watermark");
+                     hook.sendMessage("❌ | There was an error saving your watermark.").queue();
                      return null;
                  });
     }

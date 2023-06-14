@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import main.LoggerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.utils.FileUpload;
@@ -21,10 +22,10 @@ public class View extends SlashCommand
     public View()
     {
         this.name = "view";
-        this.help = "View you (or another person's) link and/or watermarks.";
+        this.help = "View you (or another person's) link and/or watermark.";
 
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.USER, "user", "See another person's link and watermarks.", false));
+        options.add(new OptionData(OptionType.USER, "user", "See another person's link and watermark.", false));
 
         this.options = options;
     }
@@ -34,26 +35,27 @@ public class View extends SlashCommand
     {
         event.deferReply().queue();
 
-        String userId = event.optUser("user", event.getUser()).getId();
-        File lyricerFolder = new File("lyricers/" + userId);
+        User user = event.optUser("user", event.getUser());
+        
+        File lyricerFolder = new File("lyricers/" + user.getId());
 
         if(!lyricerFolder.exists())
         {
             event.getHook()
                  .sendMessageFormat("❌ | There is no lyricer info saved from %s.",
-                     userId.equals(event.getUser().getId()) ? "you" : "that user")
+                     user.getId().equals(event.getUser().getId()) ? "you" : "that user")
                  .queue();
             return;
         }
 
-        File linkFile = new File("lyricers/" + userId + "/link.txt");
-        File watermarkFile = new File("lyricers/" + userId + "/watermark.png");
+        File linkFile = new File("lyricers/" + user.getId() + "/link.txt");
+        File watermarkFile = new File("lyricers/" + user.getId() + "/watermark.png");
 
         try
         {
             EmbedBuilder embed = new EmbedBuilder()
                 .setColor(0x32CD32)
-                .setTitle("Lyricer Info: " + event.getUser().getName())
+                .setTitle("Lyricer Info: " + user.getName())
                 .addField("Link", getLink(linkFile), false);
 
             if(!watermarkFile.exists())
@@ -74,7 +76,7 @@ public class View extends SlashCommand
         catch(IOException e)
         {
             LoggerManager.logError(e, event.getCommandString(), event.getUser().getName(), event.getGuild());
-            event.getHook().sendMessage("❌ | Unable to get lyricer info").queue();
+            event.getHook().sendMessage("❌ | Unable to get lyricer info.").queue();
         }
     }
 
@@ -84,6 +86,6 @@ public class View extends SlashCommand
             return "*None*";
 
         List<String> lines = Files.readAllLines(Paths.get(linkFile.toURI()), StandardCharsets.UTF_8);
-        return String.format("[YouTube Link](%1$s)", lines.get(0));
+        return String.format("[Link Here](%1$s)", lines.get(0));
     }
 }
