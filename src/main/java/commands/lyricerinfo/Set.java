@@ -58,7 +58,7 @@ public class Set extends SlashCommand
         if(event.optAttachment("watermark") != null)
         {
             Message.Attachment attachment = event.optAttachment("watermark");
-            System.out.println();
+
             if(attachment.getSize() > 2097152)
                 event.getHook().sendMessage("❌ | Your image is over 2mb. Please try again.").queue();
             else if(!attachment.getContentType().equalsIgnoreCase("image/png"))
