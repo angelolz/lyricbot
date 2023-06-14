@@ -45,11 +45,11 @@ public class BotManager
             new Rules());
 
         // ONLY FOR TESTING
-        client.forceGuildOnly("695074147071557632");
+//        client.forceGuildOnly("695074147071557632");
 
         JDABuilder.createLight(ConfigManager.getToken())
                   .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                  .enableIntents(GatewayIntent.MESSAGE_CONTENT)
+                  .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS)
                   .setActivity(Activity.playing("loading!! | " + ConfigManager.getPrefix() + "help"))
                   .addEventListeners(client.build(), new ScheduledTasks())
                   .build();

@@ -24,7 +24,7 @@ public class Set extends SlashCommand
 
         List<OptionData> options = new ArrayList<>();
         options.add(new OptionData(OptionType.STRING, "link", "Link to your own YouTube channel or social media.", false));
-        options.add(new OptionData(OptionType.ATTACHMENT, "watermarks", "Image file of your own watermarks (png only please)", false));
+        options.add(new OptionData(OptionType.ATTACHMENT, "watermarks", "Image file of your own watermark, 2mb max file size, PNG only.", false));
 
         this.options = options;
     }
