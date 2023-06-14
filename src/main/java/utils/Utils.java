@@ -1,4 +1,4 @@
-package methods;
+package utils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-public class ReadURL
+public class Utils
 {
 	public static String readURL(String string) throws Exception
 	{
@@ -22,5 +22,14 @@ public class ReadURL
 				buffer.append(chars, 0, read);
 			return buffer.toString();
 		}
+	}
+
+	public static String trimForEmbedDescription(String desc)
+	{
+		if(desc.length() > 400)
+			return desc.substring(0, 397).concat("...");
+
+		else
+			return desc;
 	}
 }

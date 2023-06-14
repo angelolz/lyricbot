@@ -1,20 +1,18 @@
 package commands;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
 
 import com.google.gson.Gson;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 
-import jsonObjects.*;
-import methods.Description;
-import methods.ReadURL;
+import dataobjects.*;
+import main.ConfigManager;
+import utils.Utils;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 public class Search extends Command
@@ -31,49 +29,44 @@ public class Search extends Command
 	{
 		try
 		{
-			Properties prop = new Properties();
-			FileInputStream propFile = new FileInputStream("config.properties");
-			prop.load(propFile);
-			String apiKey = prop.getProperty("yt_api_key");
-
 			String q = URLEncoder.encode(event.getArgs(), StandardCharsets.UTF_8);
 			String url = String.format("https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=%s&type=video&videoDimension=any&key=%s",
-					q, apiKey);
+					q, ConfigManager.getYoutubeApiKey());
 
-			String json = ReadURL.readURL(url);
+			String json = Utils.readURL(url);
 			Gson gson = new Gson();
 			SearchResults result = gson.fromJson(json, SearchResults.class);
 
-			if(result.pageInfo.totalResults == 0)
+			if(result.getPageInfo().getTotalResults() == 0)
 				event.reply(":x: | Sorry, there weren't any videos that matched your search.");
 
 			else
 			{
 				SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 				SimpleDateFormat format2 = new SimpleDateFormat("MMMM dd, yyyy hh:mm:ss a");
-				Date date = format1.parse(result.getVideo().snippet.publishedAt);
+				Date date = format1.parse(result.getVideo().getSnippet().getPublishedAt());
 				String convertedDate = format2.format(date);
 				String thumbnailString = "";
 
-				if(!result.getThumbnails().defaultThumb.url.isEmpty())
-					thumbnailString += String.format("[default](%s)\n", result.getThumbnails().defaultThumb.url);
+				if(!result.getThumbnails().getDefaultThumb().getUrl().isEmpty())
+					thumbnailString += String.format("[default](%s)\n", result.getThumbnails().getDefaultThumb().getUrl());
 
-				if(!result.getThumbnails().medium.url.isEmpty())
-					thumbnailString += String.format("[medium](%s)\n", result.getThumbnails().medium.url);
+				if(!result.getThumbnails().getMedium().getUrl().isEmpty())
+					thumbnailString += String.format("[medium](%s)\n", result.getThumbnails().getMedium().getUrl());
 
-				if(!result.getThumbnails().high.url.isEmpty())
-					thumbnailString += String.format("[high](%s)\n", result.getThumbnails().high.url);
+				if(!result.getThumbnails().getHigh().getUrl().isEmpty())
+					thumbnailString += String.format("[high](%s)\n", result.getThumbnails().getHigh().getUrl());
 
 				EmbedBuilder embed = new EmbedBuilder();
 				embed.setColor(0xc4302b);
-				embed.addField("Title", result.getVideo().snippet.title, false);
-				embed.addField("Description", Description.shorten(result.getVideo().snippet.description), false);
+				embed.addField("Title", result.getVideo().getSnippet().getTitle(), false);
+				embed.addField("Description", Utils.trimForEmbedDescription(result.getVideo().getSnippet().getDescription()), false);
 				embed.addField("Posted on", convertedDate, true);
 				embed.addField("Thumbnail(s)", thumbnailString.isEmpty() ? "*None*" : thumbnailString, true);
-				embed.setThumbnail(result.getThumbnails().defaultThumb.url);
+				embed.setThumbnail(result.getThumbnails().getDefaultThumb().getUrl());
 
 				String message = String.format("Here's the video you requested:\n"
-						+ "**https://www.youtube.com/watch?v=%s**", result.getVideo().id.videoId);
+						+ "**https://www.youtube.com/watch?v=%s**", result.getVideo().getId().getVideoId());
 
 				event.reply(message);
 				event.reply(embed.build());

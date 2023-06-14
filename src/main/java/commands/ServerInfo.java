@@ -3,7 +3,7 @@ package commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 
-import lyricbot.LyricBot;
+import main.ConfigManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 public class ServerInfo extends Command
@@ -26,13 +26,13 @@ public class ServerInfo extends Command
 		embed.setThumbnail(event.getGuild().getIconUrl());
 
 		//Body
-		embed.addField("Owner", event.getGuild().getOwner().getUser().getName() + "#" + event.getGuild().getOwner().getUser().getDiscriminator(), true);
+		embed.addField("Owner", event.getGuild().getOwner().getUser().getName(), true);
 		embed.addField("Server ID", event.getGuild().getId(), true);
 		embed.addBlankField(true);
 
 		embed.addField("Nitro Boosters", event.getGuild().getBoostCount() + " boosts at Level " + getBoostLevel(event), true);
 		embed.addField("Members", Integer.toString(event.getGuild().getMemberCount()), true);
-		embed.addField("Emojis", Integer.toString(event.getGuild().getEmotes().size()), true);
+		embed.addField("Emojis", Integer.toString(event.getGuild().getEmojis().size()), true);
 
 		embed.addField("Categories", Integer.toString(event.getGuild().getCategories().size()), true);
 		embed.addField("Channels",
@@ -53,7 +53,7 @@ public class ServerInfo extends Command
 		embed.addField("Invite Screen", event.getGuild().getSplashUrl() == null ? "none" : "[Link](" + event.getGuild().getSplashUrl() + ")", true);
 
 		//Footer
-		embed.setFooter("Created by Angelolz#6969 | Version " + LyricBot.getVersion(), event.getJDA().getUserById("189690228292845568").getAvatarUrl());
+		embed.setFooter("Created by Angelolz#6969 | Version " + ConfigManager.getVersion(), event.getJDA().getUserById("189690228292845568").getAvatarUrl());
 
 		event.reply(embed.build());
 	}

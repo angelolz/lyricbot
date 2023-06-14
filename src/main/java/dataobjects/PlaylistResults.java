@@ -1,35 +1,42 @@
-package jsonObjects;
+package dataobjects;
+
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class PlaylistResults
 {
+	@Getter
 	public class VideoInfo
 	{
+		@Getter
 		public class Snippet
 		{
+			@Getter
 			public class ResourceId
 			{
-				public String videoId;
+				private String videoId;
 			}
 			
-			public String publishedAt, title, description;
+			private String publishedAt;
+			private String title;
+			private String description;
 
 			//for playlists
-			public ResourceId resourceId;
+			private ResourceId resourceId;
 		}
 		
-		public Snippet snippet;
+		private Snippet snippet;
 	}
-	
-	public List<VideoInfo> items;
-	public String nextPageToken = "";
+
+	private List<VideoInfo> items;
+	private String nextPageToken = "";
 	
 	public VideoInfo getVideo(int index)
 	{
 		return items.get(index);
 	}
-	
 
 	public void setNextPage(String nextPageToken)
 	{
