@@ -35,9 +35,6 @@ public class LyricerRepo
 
             @Cleanup ResultSet rs = pst.executeQuery();
 
-            if(!rs.next())
-                return null;
-
             return new Lyricer()
                 .setUserId(rs.getLong("user_id"))
                 .setLink(rs.getString("link"))

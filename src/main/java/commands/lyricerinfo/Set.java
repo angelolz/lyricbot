@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import utils.Utils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -49,7 +50,7 @@ public class Set extends SlashCommand
 
         if(event.optString("link") != null)
         {
-            if(!isValidUrl(event.optString("link")))
+            if(!Utils.isValidUrl(event.optString("link")))
                 event.getHook().sendMessage("❌ | The link you provided isn't valid!").queue();
             else
                 event.getHook().sendMessage(setLink(event.getUser().getId(), event.optString("link"))).queue();
@@ -107,20 +108,6 @@ public class Set extends SlashCommand
                      hook.sendMessage("❌ | There was an error saving your watermark.").queue();
                      return null;
                  });
-    }
-
-    private static boolean isValidUrl(String url)
-    {
-        try
-        {
-            new URL(url).toURI();
-            return true;
-        }
-
-        catch(Exception e)
-        {
-            return false;
-        }
     }
 }
 

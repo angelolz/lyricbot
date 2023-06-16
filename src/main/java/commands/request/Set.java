@@ -66,6 +66,12 @@ public class Set extends SlashCommand
                 return;
             }
 
+            if(Utils.isValidUrl(event.optString("link")))
+            {
+                event.getHook().sendMessage("❌ | That's not a valid link.").queue();
+                return;
+            }
+
             request.setLink(event.optString("link"))
                    .setTitle(getTitle(event.optString("link")));
 
