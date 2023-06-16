@@ -34,7 +34,7 @@ public class Random extends Command
             String url = String.format("https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=100&pageToken=&playlistId=PLIMIDL2lIgpA4VzVBrDvfIGsj9kaP22cO&key=%s",
                 ConfigManager.getYoutubeApiKey());
 
-            String json = Utils.readURL(url);
+            String json = Utils.readURL(url, true);
             Gson gson = new Gson();
             PlaylistResults result = gson.fromJson(json, PlaylistResults.class);
             List<dataobjects.PlaylistResults.VideoInfo> videos = result.getItems();
@@ -43,7 +43,7 @@ public class Random extends Command
             {
                 String nextUrl = String.format("https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=100&pageToken=%s&playlistId=PLIMIDL2lIgpA4VzVBrDvfIGsj9kaP22cO&key=%s",
                     result.getNextPageToken(), ConfigManager.getYoutubeApiKey());
-                String nextJson = Utils.readURL(nextUrl);
+                String nextJson = Utils.readURL(nextUrl, true);
                 PlaylistResults nextPageResult = gson.fromJson(nextJson, PlaylistResults.class);
                 videos.addAll(nextPageResult.getItems());
 

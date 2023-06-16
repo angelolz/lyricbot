@@ -11,6 +11,7 @@ public class ConfigManager
     private static String token;
     private static String ownerId;
     private static String youtubeApiKey;
+    private static String urlMetaApiKey;
 
     public static void init() throws IOException
     {
@@ -21,6 +22,7 @@ public class ConfigManager
             token = prop.getProperty("bot_token");
             ownerId = prop.getProperty("owner_id");
             youtubeApiKey = prop.getProperty("yt_api_key");
+            urlMetaApiKey = prop.getProperty("url_api_key");
         }
     }
 
@@ -45,4 +47,6 @@ public class ConfigManager
     }
 
     public static String getYoutubeApiKey() { return youtubeApiKey; }
+
+    public static String getUrlMetaApiKey() { return urlMetaApiKey; }
 }

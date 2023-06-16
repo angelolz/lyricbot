@@ -36,7 +36,7 @@ public class Set extends SlashCommand
 
         if(event.optString("link") == null && event.optAttachment("watermark") == null)
         {
-            event.getHook().sendMessage("❌ | at least set a link **OR** a watermark l0ser").queue();
+            event.getHook().sendMessage("❌ | You did not provide a link **OR** a watermark.").queue();
             return;
         }
 

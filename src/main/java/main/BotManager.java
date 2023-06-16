@@ -26,7 +26,9 @@ public class BotManager
 
         //slash commands
         client.addSlashCommands(
-            new LyricerInfo()
+            new LyricerInfo(),
+            new Admin(),
+            new Request()
         );
 
         //non-hidden commands
@@ -45,7 +47,7 @@ public class BotManager
             new Rules());
 
         // ONLY FOR TESTING
-//        client.forceGuildOnly("695074147071557632");
+        //        client.forceGuildOnly("695074147071557632");
 
         JDABuilder.createLight(ConfigManager.getToken())
                   .setStatus(OnlineStatus.DO_NOT_DISTURB)

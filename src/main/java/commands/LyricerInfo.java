@@ -6,10 +6,13 @@ import commands.lyricerinfo.*;
 
 public class LyricerInfo extends SlashCommand
 {
-    public LyricerInfo() {
+    public LyricerInfo()
+    {
         this.name = "lyricerinfo";
-        this.children = new SlashCommand[] {new Set(), new View(), new Remove()};
+        this.help = "Commands used for storing lyricer info";
+        this.children = new SlashCommand[]{ new Set(), new View(), new Remove() };
     }
+
     @Override
     protected void execute(SlashCommandEvent event) { /*ignored */ }
 }
