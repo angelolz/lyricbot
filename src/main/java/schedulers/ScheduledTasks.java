@@ -43,7 +43,7 @@ public class ScheduledTasks extends ListenerAdapter
         {
             long time = StatusRepo.getTime();
             boolean open = StatusRepo.isOpen();
-            String topic = event.getJDA().getTextChannelById("928247257730514984").getTopic();
+            String topic = event.getJDA().getTextChannelById("1118658436708708484").getTopic();
 
             if((!open && topic.contains("OPEN")) || (open && topic.contains("CLOSED")) || (open && topic.contains(String.valueOf(time))))
             {
@@ -53,8 +53,8 @@ public class ScheduledTasks extends ListenerAdapter
                 else
                     message = "Song requests are **CLOSED**.";
 
-                event.getJDA().getTextChannelById("928247257730514984").getManager()
-                     //              event.getJDA().getTextChannelById("1118658436708708484").getManager()
+                //                event.getJDA().getTextChannelById("928247257730514984").getManager()
+                event.getJDA().getTextChannelById("1118658436708708484").getManager()
                      .setTopic(message).queue();
                 LoggerManager.sendLogMessage(LogLevel.INFO, "Updated channel description to: " + message);
             }
