@@ -35,6 +35,8 @@ public class LyricerRepo
 
             @Cleanup ResultSet rs = pst.executeQuery();
 
+            rs.next();
+            
             return new Lyricer()
                 .setUserId(rs.getLong("user_id"))
                 .setLink(rs.getString("link"))
@@ -71,7 +73,7 @@ public class LyricerRepo
         try(Connection con = DatabaseManager.getDataSource().getConnection();
             PreparedStatement pst = con.prepareStatement(sql))
         {
-            pst.setBoolean(1, link);
+            pst.setString(1, link);
             pst.setLong(2, userId);
             pst.executeUpdate();
         }
