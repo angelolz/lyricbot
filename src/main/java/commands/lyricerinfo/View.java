@@ -2,18 +2,21 @@ package commands.lyricerinfo;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
+import dataobjects.Lyricer;
 import main.LoggerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.utils.FileUpload;
+import repo.LyricerRepo;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,27 +39,19 @@ public class View extends SlashCommand
         event.deferReply().queue();
 
         User user = event.optUser("user", event.getUser());
-        
-        File lyricerFolder = new File("lyricers/" + user.getId());
-
-        if(!lyricerFolder.exists())
-        {
-            event.getHook()
-                 .sendMessageFormat("❌ | There is no lyricer info saved from %s.",
-                     user.getId().equals(event.getUser().getId()) ? "you" : "that user")
-                 .queue();
-            return;
-        }
-
-        File linkFile = new File("lyricers/" + user.getId() + "/link.txt");
-        File watermarkFile = new File("lyricers/" + user.getId() + "/watermark.png");
+        File watermarkFile = new File("watermarks/" + user.getId() + ".png");
 
         try
         {
+            if(!LyricerRepo.doesExist(user.getIdLong()))
+                LyricerRepo.addLyricer(user.getIdLong());
+
+            Lyricer lyricer = LyricerRepo.getLyricer(user.getIdLong());
+
             EmbedBuilder embed = new EmbedBuilder()
                 .setColor(0x32CD32)
                 .setTitle("Lyricer Info: " + user.getName())
-                .addField("Link", getLink(linkFile), false);
+                .addField("Link", lyricer.getLink() == null ? "*None*" : lyricer.getLink(), false);
 
             if(!watermarkFile.exists())
             {
@@ -73,19 +68,10 @@ public class View extends SlashCommand
             }
         }
 
-        catch(IOException e)
+        catch(SQLException e)
         {
             LoggerManager.logError(e, event.getCommandString(), event.getUser().getName(), event.getGuild());
             event.getHook().sendMessage("❌ | Unable to get lyricer info.").queue();
         }
-    }
-
-    private String getLink(File linkFile) throws IOException
-    {
-        if(!linkFile.exists())
-            return "*None*";
-
-        List<String> lines = Files.readAllLines(Paths.get(linkFile.toURI()), StandardCharsets.UTF_8);
-        return String.format("[Link Here](%1$s)", lines.get(0));
     }
 }

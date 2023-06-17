@@ -2,14 +2,15 @@ package commands.lyricerinfo;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
-import enums.LogLevel;
 import main.LoggerManager;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import repo.LyricerRepo;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,41 +34,43 @@ public class Remove extends SlashCommand
     {
         event.deferReply().queue();
 
-        File lyricerFolder = new File("lyricers/" + event.getUser().getId());
-
-        if(!lyricerFolder.exists())
+        if(event.optString("remove").equals("link"))
         {
-            event.getHook().sendMessageFormat("❌ | There is no lyricer info saved from you. use `/lyricerinfo set` to save your %s.", event.optString("remove")).queue();
-            return;
+            try
+            {
+                if(!LyricerRepo.doesExist(event.getUser().getIdLong()))
+                {
+                    event.getHook().sendMessage("❌ | you don't even have any lyricer info saved bozo").queue();
+                    return;
+                }
+
+                LyricerRepo.updateLink(event.getUser().getIdLong(), null);
+                event.getHook().sendMessage("✅ | Removed your link.").queue();
+            }
+
+            catch(SQLException e)
+            {
+                event.getHook().sendMessage("❌ | There was a problem removing your link.").queue();
+                LoggerManager.logError(e, event.getCommandString(), event.getUser().getName(), event.getGuild());
+            }
         }
 
-        event.getHook().sendMessage(remove(event.getUser().getId(), event.optString("remove"))).queue();
-
-        if(lyricerFolder.listFiles().length == 0 && !lyricerFolder.delete())
-            LoggerManager.sendLogMessage(LogLevel.ERROR, "unable to delete folder: " + lyricerFolder.getPath());
-    }
-
-    private String remove(String userId, String removeType)
-    {
-        String fileName;
-        if(removeType.equals("link"))
-            fileName = "lyricers/" + userId + "/link.txt";
         else
-            fileName = "lyricers/" + userId + "/watermark.png";
-
-        File linkFile = new File(fileName);
-
-        try
         {
-            if(Files.deleteIfExists(linkFile.toPath()))
-                return String.format("✅ | Removed your %s.", removeType);
-            else
-                return String.format("❌ | you don't even have a %s saved bozo", removeType);
-        }
+            String fileName = "watermarks/" + event.getUser().getId() + ".png";
+            try
+            {
+                if(!Files.deleteIfExists(Paths.get(fileName)))
+                    event.getHook().sendMessage("✅ | Removed your link.").queue();
+                else
+                    event.getHook().sendMessage("❌ | There is no watermark saved.").queue();
+            }
 
-        catch(IOException e)
-        {
-            return String.format("❌ | There was a problem removing your %s.", removeType);
+            catch(IOException e)
+            {
+                event.getHook().sendMessage("❌ | There was a problem removing your watermark.").queue();
+                LoggerManager.logError(e, event.getCommandString(), event.getUser().getName(), event.getGuild());
+            }
         }
     }
 }

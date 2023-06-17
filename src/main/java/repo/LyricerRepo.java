@@ -65,6 +65,18 @@ public class LyricerRepo
         }
     }
 
+    public static void updateLink(long userId, String link) throws SQLException
+    {
+        String sql = "UPDATE Lyricer SET link = ? WHERE user_id = ?";
+        try(Connection con = DatabaseManager.getDataSource().getConnection();
+            PreparedStatement pst = con.prepareStatement(sql))
+        {
+            pst.setBoolean(1, link);
+            pst.setLong(2, userId);
+            pst.executeUpdate();
+        }
+    }
+
     public static void updateBanned(long userId, boolean banned) throws SQLException
     {
         String sql = "UPDATE Lyricer SET banned = ? WHERE user_id = ?";

@@ -2,17 +2,17 @@ package commands.lyricerinfo;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
+import dataobjects.Lyricer;
 import main.LoggerManager;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import repo.LyricerRepo;
 import utils.Utils;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,19 +41,12 @@ public class Set extends SlashCommand
             return;
         }
 
-        File lyricerFolder = new File("lyricers/" + event.getUser().getId());
-        if(!lyricerFolder.exists() && (!lyricerFolder.mkdir()))
-        {
-            event.getHook().sendMessage("❌ | Couldn't set up your lyricer info.").queue();
-            return;
-        }
-
         if(event.optString("link") != null)
         {
             if(!Utils.isValidUrl(event.optString("link")))
                 event.getHook().sendMessage("❌ | The link you provided isn't valid!").queue();
             else
-                event.getHook().sendMessage(setLink(event.getUser().getId(), event.optString("link"))).queue();
+                event.getHook().sendMessage(setLink(event.getUser().getIdLong(), event.optString("link"))).queue();
         }
 
         if(event.optAttachment("watermark") != null)
@@ -69,22 +62,26 @@ public class Set extends SlashCommand
         }
     }
 
-    private String setLink(String userId, String link)
+    private String setLink(long userId, String link)
     {
-        String fileName = "lyricers/" + userId + "/link.txt";
-
-        try(FileWriter fw = new FileWriter(fileName))
+        try
         {
-            boolean exists = new File(fileName).exists();
-            fw.write(link);
+            Lyricer lyricer = new Lyricer().setUserId(userId).setLink(link);
 
-            if(exists)
-                return "✅ | Your link has been updated.\n";
-            else
+            if(!LyricerRepo.doesExist(userId))
+            {
+                LyricerRepo.addLyricer(lyricer);
                 return "✅ | Your link has been saved.\n";
+            }
+
+            else
+            {
+                LyricerRepo.updateLink(userId, link);
+                return "✅ | Your link has been updated.\n";
+            }
         }
 
-        catch(IOException e)
+        catch(SQLException e)
         {
             LoggerManager.logError(e, "setting link");
             return "❌ | There was an error saving your link.";
@@ -93,7 +90,7 @@ public class Set extends SlashCommand
 
     private void setImage(InteractionHook hook, String userId, Message.Attachment watermark)
     {
-        String fileName = "lyricers/" + userId + "/watermark.png";
+        String fileName = "watermarks/" + userId + ".png";
         boolean exists = new File(fileName).exists();
 
         watermark.getProxy().downloadToFile(new File(fileName))
