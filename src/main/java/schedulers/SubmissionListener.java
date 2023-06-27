@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class SubmissionListener extends ListenerAdapter
 {
@@ -22,6 +23,7 @@ public class SubmissionListener extends ListenerAdapter
             if(attachments.isEmpty() || !attachments.get(0).getContentType().toLowerCase().contains("video"))
             {
                 event.getMessage().delete().queue();
+                event.getChannel().sendMessageFormat("❌ | %s, submissions only please.").delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 return;
             }
 
