@@ -17,8 +17,9 @@ import java.util.concurrent.TimeUnit;
 
 public class ScheduledTasks extends ListenerAdapter
 {
-    private final ScheduledExecutorService channelDescriptionScheduler = Executors.newSingleThreadScheduledExecutor();
-    ScheduledFuture<?> channelDescriptionUpdater = null;
+    private final ScheduledExecutorService requestChannelTopicScheduler = Executors.newSingleThreadScheduledExecutor();
+
+    ScheduledFuture<?> requestChannelTopicUpdater = null;
 
     @Override
     public void onReady(@NotNull ReadyEvent event)
@@ -26,26 +27,26 @@ public class ScheduledTasks extends ListenerAdapter
         //set jda to logger
         LoggerManager.setJda(event.getJDA());
 
-        Runnable updateChannelDescription = () -> updateChannelDescription(event);
+        Runnable updateRequestChannelTopic = () -> updateSongRequestTopic(event);
 
-        channelDescriptionUpdater = channelDescriptionScheduler.scheduleAtFixedRate(updateChannelDescription, 0, 10, TimeUnit.MINUTES);
+        requestChannelTopicUpdater = requestChannelTopicScheduler.scheduleAtFixedRate(updateRequestChannelTopic, 0, 10, TimeUnit.MINUTES);
     }
 
     @Override
     public void onShutdown(@NotNull ShutdownEvent event)
     {
-        channelDescriptionScheduler.shutdown();
+        requestChannelTopicScheduler.shutdown();
     }
 
-    private void updateChannelDescription(GenericEvent event)
+    private void updateSongRequestTopic(GenericEvent event)
     {
         try
         {
             long time = StatusRepo.getTime();
             boolean open = StatusRepo.isOpen();
-            String topic = event.getJDA().getTextChannelById("1118658436708708484").getTopic();
+            String topic = event.getJDA().getTextChannelById("1118582068914442250").getTopic();
 
-            if((!open && topic.contains("OPEN")) || (open && topic.contains("CLOSED")) || (open && topic.contains(String.valueOf(time))))
+            if(topic == null || (!open && topic.contains("OPEN")) || (open && topic.contains("CLOSED")) || (open && !topic.contains(String.valueOf(time))))
             {
                 String message;
                 if(open)
@@ -53,9 +54,7 @@ public class ScheduledTasks extends ListenerAdapter
                 else
                     message = "Song requests are **CLOSED**.";
 
-                //                event.getJDA().getTextChannelById("928247257730514984").getManager()
-                event.getJDA().getTextChannelById("1119346304351490098").getManager()
-                     .setTopic(message).queue();
+                event.getJDA().getTextChannelById("928247257730514984").getManager().setTopic(message).queue();
                 LoggerManager.sendLogMessage(LogLevel.INFO, "Updated channel description to: " + message);
             }
         }

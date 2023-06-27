@@ -38,7 +38,7 @@ public class Time extends SlashCommand
         try
         {
             StatusRepo.setTime(event.optLong("time"));
-            event.getHook().sendMessageFormat("✅ | New time is set to <t:%s:F>. (will reflect in channel description within 10 minutes)", event.optLong("time")).queue();
+            event.getHook().sendMessageFormat("✅ | New song request deadline is set to <t:%s:F> (will reflect in channel description within 10 minutes). Do **NOT** forget to use `/admin toggle` when the deadline is near.", event.optLong("time")).queue();
         }
 
         catch(SQLException e)

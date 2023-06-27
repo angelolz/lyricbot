@@ -24,7 +24,7 @@ public class Set extends SlashCommand
         this.help = "Set your own link and/or watermark.";
 
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "link", "Link to your own YouTube channel or social media.", false));
+        options.add(new OptionData(OptionType.STRING, "channel-link", "Link to your own YouTube channel or social media.", false));
         options.add(new OptionData(OptionType.ATTACHMENT, "watermark", "Image file of your own watermark, 2mb max file size, PNG only.", false));
 
         this.options = options;
@@ -35,18 +35,18 @@ public class Set extends SlashCommand
     {
         event.deferReply().queue();
 
-        if(event.optString("link") == null && event.optAttachment("watermark") == null)
+        if(event.optString("channel-link") == null && event.optAttachment("watermark") == null)
         {
             event.getHook().sendMessage("❌ | You did not provide a link **OR** a watermark.").queue();
             return;
         }
 
-        if(event.optString("link") != null)
+        if(event.optString("channel-link") != null)
         {
-            if(!Utils.isValidUrl(event.optString("link")))
+            if(!Utils.isValidUrl(event.optString("channel-link")))
                 event.getHook().sendMessage("❌ | The link you provided isn't valid!").queue();
             else
-                event.getHook().sendMessage(setLink(event.getUser().getIdLong(), event.optString("link"))).queue();
+                event.getHook().sendMessage(setLink(event.getUser().getIdLong(), event.optString("channel-link"))).queue();
         }
 
         if(event.optAttachment("watermark") != null)

@@ -12,10 +12,6 @@ import net.dv8tion.jda.api.utils.FileUpload;
 import repo.LyricerRepo;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +47,7 @@ public class View extends SlashCommand
             EmbedBuilder embed = new EmbedBuilder()
                 .setColor(0x32CD32)
                 .setTitle("Lyricer Info: " + user.getName())
-                .addField("Link", lyricer.getLink() == null ? "*None*" : lyricer.getLink(), false);
+                .addField("YouTube/Social Link", lyricer.getLink() == null ? "*None*" : lyricer.getLink(), false);
 
             if(!watermarkFile.exists())
             {
