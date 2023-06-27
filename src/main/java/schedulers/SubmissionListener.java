@@ -23,7 +23,7 @@ public class SubmissionListener extends ListenerAdapter
             if(attachments.isEmpty() || !attachments.get(0).getContentType().toLowerCase().contains("video"))
             {
                 event.getMessage().delete().queue();
-                event.getChannel().sendMessageFormat("❌ | %s, submissions only please.").delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
+                event.getChannel().sendMessageFormat("❌ | %s, submissions only please.", event.getAuthor().getAsMention()).delay(5, TimeUnit.SECONDS).flatMap(Message::delete).queue();
                 return;
             }
 
