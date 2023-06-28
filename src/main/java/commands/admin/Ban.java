@@ -3,6 +3,7 @@ package commands.admin;
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import main.LoggerManager;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -19,7 +20,7 @@ public class Ban extends SlashCommand
     {
         this.name = "ban";
         this.help = "[ANGEL/DOUGLAS ONLY] Ban a user from requesting a song.";
-
+        this.userPermissions = new Permission[]{ Permission.MANAGE_SERVER };
         List<OptionData> options = new ArrayList<>();
         options.add(new OptionData(OptionType.USER, "user", "User to ban", true));
 
@@ -30,9 +31,6 @@ public class Ban extends SlashCommand
     protected void execute(SlashCommandEvent event)
     {
         if(!event.getGuild().getId().equals("1114273768660017172") && !event.getGuild().getId().equals("695074147071557632"))
-            return;
-
-        if(!event.getUser().getId().equals("189690228292845568") && !event.getUser().getId().equals("465271897978961921"))
             return;
 
         try

@@ -3,6 +3,7 @@ package commands.admin;
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import main.LoggerManager;
+import net.dv8tion.jda.api.Permission;
 import repo.StatusRepo;
 
 import java.sql.SQLException;
@@ -13,15 +14,13 @@ public class Toggle extends SlashCommand
     {
         this.name = "toggle";
         this.help = "[ANGEL/DOUGLAS ONLY] Toggles the song request's open/closed status.";
+        this.userPermissions = new Permission[]{ Permission.MANAGE_SERVER };
     }
 
     @Override
     protected void execute(SlashCommandEvent event)
     {
         if(!event.getGuild().getId().equals("1114273768660017172") && !event.getGuild().getId().equals("695074147071557632"))
-            return;
-
-        if(!event.getUser().getId().equals("189690228292845568") && !event.getUser().getId().equals("465271897978961921"))
             return;
 
         event.deferReply().queue();
