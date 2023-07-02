@@ -24,9 +24,12 @@ public class SubmissionListener extends ListenerAdapter
             Matcher m = p.matcher(event.getMessage().getContentRaw());
 
             List<Message.Attachment> attachments = event.getMessage().getAttachments();
-            if(attachments.isEmpty() || !attachments.get(0).getContentType().toLowerCase().contains("video") || m.find())
+            
+            //can't find link AND (no attachments OR attachment doesn't have a video)
+            if(!m.find() && (attachments.isEmpty() || !attachments.get(0).getContentType().toLowerCase().contains("video")))
             {
-                if(event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals("1114390059572015204") || role.getId().equals("1114390059572015204")))
+                //if an admin breaks these rules, dw about it
+                if(event.getMember().getRoles().stream().anyMatch(role -> role.getId().equals("1114276515857833994") || role.getId().equals("1114390059572015204")))
                     return;
 
                 event.getMessage().delete().queue();
