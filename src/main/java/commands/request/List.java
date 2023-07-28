@@ -37,8 +37,9 @@ public class List extends SlashCommand
             StringBuilder sb = new StringBuilder();
             for(Request request : requests)
             {
+                String title = request.getTitle().length() > 50 ? request.getTitle().substring(0, 47) + "..." : request.getTitle();
                 String name = request.getName().length() > 16 ? request.getName().substring(0, 13) + "..." : request.getName();
-                sb.append(String.format("%-16s\t%s%n", name, request.getTitle()));
+                sb.append(String.format("%-50s {%s}%n", title, name));
             }
 
             event.getHook().sendMessage("```\n" + sb + "\n```").queue();

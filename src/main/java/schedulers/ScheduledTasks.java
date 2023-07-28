@@ -54,7 +54,7 @@ public class ScheduledTasks extends ListenerAdapter
                 else
                     message = "Song requests are **CLOSED**.";
 
-                event.getJDA().getTextChannelById("1118582068914442250").getManager().setTopic(message).queue();
+                event.getJDA().getTextChannelById("1123274001993715823").getManager().setTopic(message).queue();
                 LoggerManager.sendLogMessage(LogLevel.INFO, "Updated channel description to: " + message);
             }
         }

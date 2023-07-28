@@ -32,7 +32,7 @@ public class Toggle extends SlashCommand
 
             String message;
             if(newOpenStatus)
-                message = String.format("Song requests are now **OPEN**. Should be closed in: <t:%s:F>", StatusRepo.getTime());
+                message = String.format("Song requests are now **OPEN**. Should be closed in: %s", StatusRepo.getTime() < 0 ? "**TBA**" : "<t:%s:F>");
             else
                 message = "Song requests are now **CLOSED**.";
 

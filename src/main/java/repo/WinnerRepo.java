@@ -17,7 +17,7 @@ public class WinnerRepo
     {
         List<Request> winners = new ArrayList<>();
 
-        String sql = "SELECT * FROM Winner";
+        String sql = "SELECT * FROM Winner ORDER BY added";
         try(Connection con = DatabaseManager.getDataSource().getConnection();
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery())
