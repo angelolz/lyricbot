@@ -44,7 +44,7 @@ public class ScheduledTasks extends ListenerAdapter
         {
             long time = StatusRepo.getTime();
             boolean open = StatusRepo.isOpen();
-            String topic = event.getJDA().getTextChannelById("1118582068914442250").getTopic();
+            String topic = event.getJDA().getTextChannelById("1123274001993715823").getTopic();
 
             if(topic == null || (!open && topic.contains("OPEN")) || (open && topic.contains("CLOSED")) || (open && !topic.contains(String.valueOf(time))))
             {
