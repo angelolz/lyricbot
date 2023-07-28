@@ -39,7 +39,7 @@ public class List extends SlashCommand
             {
                 String title = request.getTitle().length() > 75 ? request.getTitle().substring(0, 72) + "..." : request.getTitle();
                 String name = request.getName().length() > 16 ? request.getName().substring(0, 13) + "..." : request.getName();
-                sb.append(String.format("%-50s {%s}%n", title, name));
+                sb.append(String.format("%-75s {%s}%n", title, name));
             }
 
             event.getHook().sendMessage("```\n" + sb + "\n```").queue();
