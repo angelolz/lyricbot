@@ -30,6 +30,8 @@ public class Remove extends SlashCommand
     @Override
     protected void execute(SlashCommandEvent event)
     {
+        event.deferReply().queue();
+
         if(!event.getGuild().getId().equals("1114273768660017172") && !event.getGuild().getId().equals("695074147071557632"))
             return;
 

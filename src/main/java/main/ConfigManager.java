@@ -7,7 +7,7 @@ import java.util.Properties;
 public class ConfigManager
 {
     private static final String PREFIX = "lb!";
-    private static final String VERSION = "v1.6.5";
+    private static final String VERSION = "v1.6.6";
     private static String token;
     private static String ownerId;
     private static String youtubeApiKey;
