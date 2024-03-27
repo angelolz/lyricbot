@@ -55,7 +55,5 @@ public class BotManager
                   .setActivity(Activity.playing("loading!! | " + ConfigManager.getPrefix() + "help"))
                   .addEventListeners(client.build(), new ScheduledTasks(), new SubmissionListener())
                   .build();
-
-        uptime = System.currentTimeMillis();
     }
 }
