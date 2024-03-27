@@ -21,11 +21,12 @@ public class Pick extends SlashCommand
     public Pick()
     {
         this.name = "pick";
-        this.help = "[ANGEL/DOUGLAS ONLY] Puts a user in the winners list and prevents them from sending a request.";
+        this.help = "Puts a user in the winners list and prevents them from sending a request.";
         this.userPermissions = new Permission[]{ Permission.MANAGE_SERVER };
 
         List<OptionData> options = new ArrayList<>();
         options.add(new OptionData(OptionType.USER, "user", "This user will be marked as a winner.", true));
+        options.add(new OptionData(OptionType.INTEGER, "season", "For what season?", true));
         this.options = options;
     }
 
@@ -49,7 +50,7 @@ public class Pick extends SlashCommand
                 return;
             }
 
-            WinnerRepo.addWinner(request);
+            WinnerRepo.addWinner(request, (int) event.optLong("season"));
             LyricerRepo.updateBanned(request.getUserId(), true);
             RequestRepo.deleteRequest(request.getUserId());
 

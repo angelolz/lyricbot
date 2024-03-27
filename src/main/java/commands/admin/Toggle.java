@@ -13,7 +13,7 @@ public class Toggle extends SlashCommand
     public Toggle()
     {
         this.name = "toggle";
-        this.help = "[ANGEL/DOUGLAS ONLY] Toggles the song request's open/closed status.";
+        this.help = "Toggles the song request's open/closed status.";
         this.userPermissions = new Permission[]{ Permission.MANAGE_SERVER };
     }
 
@@ -29,14 +29,7 @@ public class Toggle extends SlashCommand
         {
             boolean newOpenStatus = !StatusRepo.isOpen();
             StatusRepo.setOpen(newOpenStatus);
-
-            String message;
-            if(newOpenStatus)
-                message = String.format("Song requests are now **OPEN**. Should be closed in: %s", StatusRepo.getTime() < 0 ? "**TBA**" : "<t:" + StatusRepo.getTime() + ":F>");
-            else
-                message = "Song requests are now **CLOSED**.";
-
-            event.getHook().sendMessage("✅ | " + message + " (will reflect in channel description within 10 minutes)").queue();
+            event.getHook().sendMessageFormat("✅ | Song requests are now **%s**. (will reflect in channel description within 10 minutes)", newOpenStatus ? "OPEN" : "CLOSED").queue();
         }
 
         catch(SQLException e)

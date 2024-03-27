@@ -1,7 +1,7 @@
 CREATE
-DATABASE LyricBot;
+    DATABASE LyricBot;
 USE
-LyricBot;
+    LyricBot;
 
 CREATE TABLE Lyricer
 (
@@ -13,17 +13,17 @@ CREATE TABLE Lyricer
 CREATE TABLE Request
 (
     user_id BIGINT UNIQUE      NOT NULL PRIMARY KEY,
-    name    varchar(32) UNIQUE NOT NULL,
     link    varchar(512)       NOT NULL,
     title   varchar(256)       NOT NULL
 );
 
 CREATE TABLE Winner
 (
-    user_id BIGINT UNIQUE      NOT NULL PRIMARY KEY,
-    name    varchar(32) UNIQUE NOT NULL,
+    winner_id int NOT NULL auto_increment PRIMARY KEY,
+    user_id BIGINT UNIQUE      NOT NULL,
     title   varchar(512)       NOT NULL,
-    added   timestamp          NOT NULL DEFAULT CURRENT_TIMESTAMP
+    added   timestamp          NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    season int NOT NULL
 );
 
 CREATE TABLE Status
@@ -31,9 +31,3 @@ CREATE TABLE Status
     time bigint,
     open tinyint default 1
 );
-
-INSERT INTO STATUS (time)
-VALUES (-11);
-
--- updates
-ALTER TABLE Winner ADD COLUMN added timestamp DEFAULT CURRENT_TIMESTAMP

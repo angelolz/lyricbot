@@ -18,11 +18,12 @@ public class Unban extends SlashCommand
     public Unban()
     {
         this.name = "unban";
-        this.help = "[ANGEL/DOUGLAS ONLY] Unban a user from requesting a song.";
+        this.help = "Unban a user from requesting a song.";
         this.userPermissions = new Permission[]{ Permission.MANAGE_SERVER };
 
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.USER, "user", "User to unban", true));
+        options.add(new OptionData(OptionType.USER, "user", "User to unban", false));
+        options.add(new OptionData(OptionType.BOOLEAN, "unban_everyone", "Unban everyone? User is ignored", false));
 
         this.options = options;
     }
@@ -37,7 +38,19 @@ public class Unban extends SlashCommand
         {
             event.deferReply().queue();
 
+            if(event.optBoolean("unban_everyone"))
+            {
+                LyricerRepo.unbanEveryone();
+                event.getHook().sendMessage("✅ | Everyone has been unbanned. chaos").queue();
+                return;
+            }
+
             User user = event.optUser("user");
+            if(user == null)
+            {
+                event.getHook().sendMessage("❌ | Please specify a user.").queue();
+                return;
+            }
 
             if(!LyricerRepo.doesExist(user.getIdLong()))
                 LyricerRepo.addLyricer(user.getIdLong());

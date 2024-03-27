@@ -19,7 +19,7 @@ public class Ban extends SlashCommand
     public Ban()
     {
         this.name = "ban";
-        this.help = "[ANGEL/DOUGLAS ONLY] Ban a user from requesting a song.";
+        this.help = "Ban a user from requesting a song.";
         this.userPermissions = new Permission[]{ Permission.MANAGE_SERVER };
         List<OptionData> options = new ArrayList<>();
         options.add(new OptionData(OptionType.USER, "user", "User to ban", true));

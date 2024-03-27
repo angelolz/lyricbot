@@ -38,7 +38,7 @@ public class List extends SlashCommand
             for(Request request : requests)
             {
                 String title = request.getTitle().length() > 75 ? request.getTitle().substring(0, 72) + "..." : request.getTitle();
-                String name = request.getName().length() > 16 ? request.getName().substring(0, 13) + "..." : request.getName();
+                String name = event.getJDA().retrieveUserById(request.getUserId()).complete().getEffectiveName();
                 sb.append(String.format("%-75s {%s}%n", title, name));
             }
 

@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 public class Request
 {
     private Long userId;
-    private String name;
     private String link;
     private String title;
+    private int season;
 }

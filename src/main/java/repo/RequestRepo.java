@@ -26,7 +26,6 @@ public class RequestRepo
             {
                 Request request = new Request()
                     .setUserId(rs.getLong("user_id"))
-                    .setName(rs.getString("name"))
                     .setLink(rs.getString("link"))
                     .setTitle(rs.getString("title"));
 
@@ -51,7 +50,6 @@ public class RequestRepo
 
             return new Request()
                 .setUserId(rs.getLong("user_id"))
-                .setName(rs.getString("name"))
                 .setLink(rs.getString("link"))
                 .setTitle(rs.getString("title"));
         }
@@ -59,15 +57,14 @@ public class RequestRepo
 
     public static void addRequest(Request request) throws SQLException
     {
-        String sql = "INSERT INTO Request (user_id, name, link, title) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO Request (user_id, link, title) VALUES (?,?,?)";
 
         try(Connection con = DatabaseManager.getDataSource().getConnection();
             PreparedStatement pst = con.prepareStatement(sql))
         {
             pst.setLong(1, request.getUserId());
-            pst.setString(2, request.getName());
-            pst.setString(3, request.getLink());
-            pst.setString(4, request.getTitle());
+            pst.setString(2, request.getLink());
+            pst.setString(3, request.getTitle());
 
             pst.executeUpdate();
         }
@@ -89,15 +86,14 @@ public class RequestRepo
 
     public static void updateRequest(Request request) throws SQLException
     {
-        String sql = "UPDATE Request SET name = ?, link = ?, title = ? WHERE user_id = ?";
+        String sql = "UPDATE Request SET link = ?, title = ? WHERE user_id = ?";
 
         try(Connection con = DatabaseManager.getDataSource().getConnection();
             PreparedStatement pst = con.prepareStatement(sql))
         {
-            pst.setString(1, request.getName());
-            pst.setString(2, request.getLink());
-            pst.setString(3, request.getTitle());
-            pst.setLong(4, request.getUserId());
+            pst.setString(1, request.getLink());
+            pst.setString(2, request.getTitle());
+            pst.setLong(3, request.getUserId());
 
             pst.executeUpdate();
         }

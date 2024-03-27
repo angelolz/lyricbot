@@ -36,7 +36,7 @@ public class LyricerRepo
             @Cleanup ResultSet rs = pst.executeQuery();
 
             rs.next();
-            
+
             return new Lyricer()
                 .setUserId(rs.getLong("user_id"))
                 .setLink(rs.getString("link"))
@@ -87,6 +87,16 @@ public class LyricerRepo
         {
             pst.setBoolean(1, banned);
             pst.setLong(2, userId);
+            pst.executeUpdate();
+        }
+    }
+
+    public static void unbanEveryone() throws SQLException
+    {
+        String sql = "UPDATE Lyricer SET banned = 0";
+        try(Connection con = DatabaseManager.getDataSource().getConnection();
+            PreparedStatement pst = con.prepareStatement(sql))
+        {
             pst.executeUpdate();
         }
     }

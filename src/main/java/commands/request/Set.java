@@ -46,8 +46,7 @@ public class Set extends SlashCommand
         }
 
         Request request = new Request()
-            .setUserId(event.getUser().getIdLong())
-            .setName(event.getUser().getName());
+            .setUserId(event.getUser().getIdLong());
 
         try
         {

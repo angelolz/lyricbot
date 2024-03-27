@@ -13,20 +13,21 @@ import java.util.List;
 
 public class WinnerRepo
 {
-    public static List<Request> getWinners() throws SQLException
+    public static List<Request> getWinners(int season) throws SQLException
     {
         List<Request> winners = new ArrayList<>();
 
-        String sql = "SELECT * FROM Winner ORDER BY added";
+        String sql = "SELECT * FROM Winner WHERE season = ? ORDER BY added";
         try(Connection con = DatabaseManager.getDataSource().getConnection();
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery())
+            PreparedStatement pst = con.prepareStatement(sql))
         {
+            pst.setInt(1, season);
+
+            ResultSet rs = pst.executeQuery();
             while(rs.next())
             {
                 Request request = new Request()
                     .setUserId(rs.getLong("user_id"))
-                    .setName(rs.getString("name"))
                     .setTitle(rs.getString("title"));
 
                 winners.add(request);
@@ -36,15 +37,15 @@ public class WinnerRepo
         return winners;
     }
 
-    public static void addWinner(Request winningRequest) throws SQLException
+    public static void addWinner(Request winningRequest, int season) throws SQLException
     {
-        String sql = "INSERT INTO Winner (user_id, name, title) VALUES (?,?,?)";
+        String sql = "INSERT INTO Winner (user_id, title, season) VALUES (?,?,?)";
         try(Connection con = DatabaseManager.getDataSource().getConnection();
             PreparedStatement pst = con.prepareStatement(sql))
         {
             pst.setLong(1, winningRequest.getUserId());
-            pst.setString(2, winningRequest.getName());
-            pst.setString(3, winningRequest.getTitle());
+            pst.setString(2, winningRequest.getTitle());
+            pst.setInt(3, season);
 
             pst.executeUpdate();
         }

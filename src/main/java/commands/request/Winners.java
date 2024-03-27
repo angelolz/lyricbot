@@ -5,10 +5,14 @@ import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import dataobjects.Request;
 import main.LoggerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import repo.WinnerRepo;
 
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Winners extends SlashCommand
 {
@@ -16,6 +20,11 @@ public class Winners extends SlashCommand
     {
         this.name = "winners";
         this.help = "List all the winners of the wheel and their winning song.";
+
+        List<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.INTEGER, "season", "View winners of a certain season", true));
+
+        this.options = options;
     }
 
     @Override
@@ -28,22 +37,22 @@ public class Winners extends SlashCommand
 
         try
         {
-            java.util.List<Request> winners = WinnerRepo.getWinners();
+            java.util.List<Request> winners = WinnerRepo.getWinners((int) event.optLong("season"));
 
             if(winners.isEmpty())
             {
-                event.getHook().sendMessageFormat("❌ | There are no winners!").queue();
+                event.getHook().sendMessageFormat("❌ | There are no winners for that season!").queue();
                 return;
             }
 
             EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Winner List")
+                .setTitle("Winner List for Season " + event.optLong("season"))
                 .setColor(Color.YELLOW);
 
             for(Request request : winners)
             {
-                String name = request.getName().length() > 16 ? request.getName().substring(0, 13) + "..." : request.getName();
-                embed.appendDescription(String.format("**%s** | %s\n", name, request.getTitle()));
+                String name = event.getJDA().retrieveUserById(request.getUserId()).complete().getEffectiveName();
+                embed.appendDescription(String.format("**%s** | %s%n", name, request.getTitle()));
             }
 
             event.getHook().sendMessageEmbeds(embed.build()).queue();
