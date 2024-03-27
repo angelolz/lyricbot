@@ -2,7 +2,6 @@ package main;
 
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import commands.*;
-import commands.admin.Notify;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -12,8 +11,6 @@ import schedulers.SubmissionListener;
 
 public class BotManager
 {
-    private static long uptime;
-
     public static void init()
     {
         //create command builders and listeners
@@ -60,23 +57,5 @@ public class BotManager
                   .build();
 
         uptime = System.currentTimeMillis();
-    }
-
-    public static String getUptime()
-    {
-        long ms = System.currentTimeMillis() - uptime;
-        int days;
-        int hours;
-        int minutes;
-        int seconds;
-        String result;
-
-        seconds = (int) ((ms / 1000) % 60);
-        minutes = (int) ((ms / (1000 * 60)) % 60);
-        hours = (int) ((ms / (1000 * 60 * 60)) % 24);
-        days = (int) (ms / (1000 * 60 * 60 * 24));
-
-        result = days + " days, " + hours + " hours, " + minutes + " minutes, and " + seconds + " seconds";
-        return result;
     }
 }
