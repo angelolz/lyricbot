@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import repo.RequestRepo;
+import utils.Statics;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,7 +22,8 @@ public class Remove extends SlashCommand
         this.userPermissions = new Permission[]{ Permission.MANAGE_SERVER };
 
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.USER, "user", "User to remove request of", true));
+        options.add(new OptionData(OptionType.USER, "user", "User to remove request of", false));
+        options.add(new OptionData(OptionType.INTEGER, "user_id", "Remove request using user id", false));
 
         this.options = options;
     }
@@ -31,12 +33,24 @@ public class Remove extends SlashCommand
     {
         event.deferReply().queue();
 
-        if(!event.getGuild().getId().equals("1114273768660017172") && !event.getGuild().getId().equals("695074147071557632"))
+        if(event.getGuild() == null && !event.getGuild().getId().equals(Statics.ONEHR_SERVER_ID) && !event.getGuild().getId().equals(Statics.DEV_SERVER_ID))
             return;
+
+        if(event.optUser("user") == null && event.getOption("user_id") == null)
+        {
+            event.getHook().sendMessageFormat("❌ | Please provide a user or a user ID.").queue();
+            return;
+        }
+
+        long userId;
+        if(event.getOption("user_id") == null)
+            userId = event.optUser("user").getIdLong();
+        else
+            userId = event.optLong("user_id");
 
         try
         {
-            RequestRepo.deleteRequest(event.optUser("user").getIdLong());
+            RequestRepo.deleteRequest(userId);
             event.getHook().sendMessage("✅ | Removed request.").queue();
         }
 

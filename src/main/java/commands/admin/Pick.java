@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import repo.LyricerRepo;
 import repo.RequestRepo;
 import repo.WinnerRepo;
+import utils.Statics;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class Pick extends SlashCommand
     @Override
     protected void execute(SlashCommandEvent event)
     {
-        if(!event.getGuild().getId().equals("1114273768660017172") && !event.getGuild().getId().equals("695074147071557632"))
+        if(event.getGuild() == null && !event.getGuild().getId().equals(Statics.ONEHR_SERVER_ID) && !event.getGuild().getId().equals(Statics.DEV_SERVER_ID))
             return;
 
         event.deferReply().queue();

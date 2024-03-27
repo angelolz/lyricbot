@@ -2,6 +2,7 @@ package main;
 
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import commands.*;
+import commands.admin.Notify;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -39,7 +40,8 @@ public class BotManager
             new Search(),
             new Random(),
             new ServerInfo(),
-            new Support());
+            new Support()
+        );
 
         //hidden commands
         client.addCommands(

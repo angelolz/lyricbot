@@ -10,7 +10,7 @@ public class Admin extends SlashCommand
     {
         this.name = "admin";
         this.help = "Commands used for angel/doublar";
-        this.children = new SlashCommand[]{ new Toggle(), new Pick(), new Ban(), new Unban(), new Remove() };
+        this.children = new SlashCommand[]{ new Toggle(), new Pick(), new Ban(), new Unban(), new Remove(), new Notify() };
     }
 
     @Override

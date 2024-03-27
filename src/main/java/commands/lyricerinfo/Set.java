@@ -18,14 +18,17 @@ import java.util.List;
 
 public class Set extends SlashCommand
 {
+    private static final String CHANNEL_LINK = "channel-link";
+    private static final String WATERMARK = "watermark";
+
     public Set()
     {
         this.name = "set";
         this.help = "Set your own link and/or watermark.";
 
         List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "channel-link", "Link to your own YouTube channel or social media.", false));
-        options.add(new OptionData(OptionType.ATTACHMENT, "watermark", "Image file of your own watermark, 2mb max file size, PNG only.", false));
+        options.add(new OptionData(OptionType.STRING, CHANNEL_LINK, "Link to your own YouTube channel or social media.", false));
+        options.add(new OptionData(OptionType.ATTACHMENT, WATERMARK, "Image file of your own watermark, 2mb max file size, PNG only.", false));
 
         this.options = options;
     }
@@ -35,30 +38,30 @@ public class Set extends SlashCommand
     {
         event.deferReply().queue();
 
-        if(event.optString("channel-link") == null && event.optAttachment("watermark") == null)
+        if(event.optString(CHANNEL_LINK) == null && event.optAttachment(WATERMARK) == null)
         {
             event.getHook().sendMessage("❌ | You did not provide a link **OR** a watermark.").queue();
             return;
         }
 
-        if(event.optString("channel-link") != null)
+        if(event.optString(CHANNEL_LINK) != null)
         {
-            if(!Utils.isValidUrl(event.optString("channel-link")))
+            if(!Utils.isValidUrl(event.optString(CHANNEL_LINK)))
                 event.getHook().sendMessage("❌ | The link you provided isn't valid!").queue();
             else
-                event.getHook().sendMessage(setLink(event.getUser().getIdLong(), event.optString("channel-link"))).queue();
+                event.getHook().sendMessage(setLink(event.getUser().getIdLong(), event.optString(CHANNEL_LINK))).queue();
         }
 
-        if(event.optAttachment("watermark") != null)
+        if(event.optAttachment(WATERMARK) != null)
         {
-            Message.Attachment attachment = event.optAttachment("watermark");
+            Message.Attachment attachment = event.optAttachment(WATERMARK);
 
             if(attachment.getSize() > 2097152)
                 event.getHook().sendMessage("❌ | Your image is over 2mb. Please try again.").queue();
             else if(!attachment.getContentType().equalsIgnoreCase("image/png"))
-                event.getHook().sendMessage("❌ | Only PNGs are accepted. Please try again").queue();
+                event.getHook().sendMessageFormat("❌ | Only PNGs are accepted. Please try again. (expected: `image/png`, received: `%s`)", attachment.getContentType()).queue();
             else
-                setImage(event.getHook(), event.getUser().getId(), event.optAttachment("watermark"));
+                setImage(event.getHook(), event.getUser().getId(), event.optAttachment(WATERMARK));
         }
     }
 

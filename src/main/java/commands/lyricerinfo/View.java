@@ -57,7 +57,7 @@ public class View extends SlashCommand
 
             else
             {
-                FileUpload imgUpload = FileUpload.fromData(watermarkFile, "watermark.png");
+                FileUpload imgUpload = FileUpload.fromData(watermarkFile, String.format("%s_wm.png", user.getName()));
                 embed.addField("Watermark:", "", true);
                 embed.setImage("attachment://watermark.png");
                 event.getHook().sendMessageEmbeds(embed.build()).addFiles(imgUpload).queue();
