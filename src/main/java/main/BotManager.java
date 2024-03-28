@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import schedulers.NotificationListener;
 import schedulers.ScheduledTasks;
 import schedulers.SubmissionListener;
 
@@ -53,7 +54,7 @@ public class BotManager
                   .setStatus(OnlineStatus.DO_NOT_DISTURB)
                   .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS)
                   .setActivity(Activity.playing("loading!! | " + ConfigManager.getPrefix() + "help"))
-                  .addEventListeners(client.build(), new ScheduledTasks(), new SubmissionListener())
+                  .addEventListeners(client.build(), new ScheduledTasks(), new SubmissionListener(), new NotificationListener())
                   .build();
     }
 }

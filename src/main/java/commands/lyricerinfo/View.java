@@ -59,7 +59,7 @@ public class View extends SlashCommand
             {
                 FileUpload imgUpload = FileUpload.fromData(watermarkFile, String.format("%s_wm.png", user.getName()));
                 embed.addField("Watermark:", "", true);
-                embed.setImage("attachment://watermark.png");
+                embed.setImage(String.format("attachment://%s_wm.png", user.getName()));
                 event.getHook().sendMessageEmbeds(embed.build()).addFiles(imgUpload).queue();
             }
         }
