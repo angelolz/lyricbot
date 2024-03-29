@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import repo.RequestRepo;
 import utils.Statics;
+import utils.Utils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import java.util.List;
 
 public class Remove extends SlashCommand
 {
+    private static final String USER_ID = "user_id";
+
     public Remove()
     {
         this.name = "remove";
@@ -23,7 +26,7 @@ public class Remove extends SlashCommand
 
         List<OptionData> options = new ArrayList<>();
         options.add(new OptionData(OptionType.USER, "user", "User to remove request of", false));
-        options.add(new OptionData(OptionType.INTEGER, "user_id", "Remove request using user id", false));
+        options.add(new OptionData(OptionType.STRING, USER_ID, "Remove request using user id", false));
 
         this.options = options;
     }
@@ -36,17 +39,25 @@ public class Remove extends SlashCommand
         if(event.getGuild() == null && !event.getGuild().getId().equals(Statics.ONEHR_SERVER_ID) && !event.getGuild().getId().equals(Statics.DEV_SERVER_ID))
             return;
 
-        if(event.optUser("user") == null && event.getOption("user_id") == null)
+        if(event.optUser("user") == null && event.optString(USER_ID) == null)
         {
             event.getHook().sendMessageFormat("❌ | Please provide a user or a user ID.").queue();
             return;
         }
 
         long userId;
-        if(event.getOption("user_id") == null)
+        if(event.getOption(USER_ID) == null)
             userId = event.optUser("user").getIdLong();
         else
-            userId = event.optLong("user_id");
+        {
+            if(Utils.isValidLong(event.optString(USER_ID)))
+                userId = event.optLong(USER_ID);
+            else
+            {
+                event.getHook().sendMessageFormat("❌ | Invalid user ID.").queue();
+                return;
+            }
+        }
 
         try
         {
