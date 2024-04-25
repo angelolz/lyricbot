@@ -2,6 +2,8 @@ package main;
 
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import commands.*;
+import commands.ownerCommands.CheckRoles;
+import commands.ownerCommands.Rules;
 import listeners.ButtonListener;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;

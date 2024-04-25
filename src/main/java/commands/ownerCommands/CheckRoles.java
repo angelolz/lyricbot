@@ -1,4 +1,4 @@
-package commands;
+package commands.ownerCommands;
 
 import java.io.File;
 import java.io.IOException;
