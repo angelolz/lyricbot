@@ -110,4 +110,14 @@ public class RequestRepo
             pst.executeUpdate();
         }
     }
+
+    public static void deleteAllRequests() throws SQLException
+    {
+        String sql = "DELETE FROM Request";
+        try(Connection con = DatabaseManager.getDataSource().getConnection();
+            PreparedStatement pst = con.prepareStatement(sql))
+        {
+            pst.executeUpdate();
+        }
+    }
 }

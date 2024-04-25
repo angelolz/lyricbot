@@ -18,11 +18,6 @@ public class List extends SlashCommand
     {
         this.name = "list";
         this.help = "List all the songs that have been requested.";
-
-        java.util.List<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "link", "Link to your song request.", true));
-
-        this.options = options;
     }
 
     @Override

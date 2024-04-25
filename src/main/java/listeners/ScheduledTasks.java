@@ -1,4 +1,4 @@
-package schedulers;
+package listeners;
 
 import enums.LogLevel;
 import main.LoggerManager;
@@ -48,12 +48,7 @@ public class ScheduledTasks extends ListenerAdapter
 
             if(topic == null || (!open && topic.contains("OPEN")) || (open && topic.contains("CLOSED")) || (open && !topic.contains(String.valueOf(time))))
             {
-                String message;
-                if(open)
-                    message = String.format("Song requests are **OPEN**. Should be closed in: %s", time <= 0 ? "TBA" : "<t:" + time + ":F>");
-                else
-                    message = "Song requests are **CLOSED**.";
-
+                String message = String.format("Song requests are **%s**", open ? "OPEN" : "CLOSED");
                 event.getJDA().getTextChannelById("1123274001993715823").getManager().setTopic(message).queue();
                 LoggerManager.sendLogMessage(LogLevel.INFO, "Updated channel description to: " + message);
             }

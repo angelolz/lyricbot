@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.utils.FileUpload;
+import net.dv8tion.jda.api.utils.MarkdownSanitizer;
 import repo.LyricerRepo;
 
 import java.io.File;
@@ -57,9 +58,9 @@ public class View extends SlashCommand
 
             else
             {
-                FileUpload imgUpload = FileUpload.fromData(watermarkFile, String.format("%s_wm.png", user.getName()));
+                FileUpload imgUpload = FileUpload.fromData(watermarkFile, String.format("%s_wm.png", MarkdownSanitizer.escape(user.getName())));
                 embed.addField("Watermark:", "", true);
-                embed.setImage(String.format("attachment://%s_wm.png", user.getName()));
+                embed.setImage(String.format("attachment://%s_wm.png", MarkdownSanitizer.escape(user.getName())));
                 event.getHook().sendMessageEmbeds(embed.build()).addFiles(imgUpload).queue();
             }
         }
