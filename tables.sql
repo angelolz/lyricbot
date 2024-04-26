@@ -25,3 +25,9 @@ CREATE TABLE Winner
     added   timestamp          NOT NULL DEFAULT CURRENT_TIMESTAMP,
     season int NOT NULL
 );
+
+CREATE TABLE Status
+(
+    time bigint,
+    open tinyint default 1
+);

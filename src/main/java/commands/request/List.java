@@ -50,9 +50,9 @@ public class List extends SlashCommand
             }
 
             MessageCreateBuilder msgBuilder = new MessageCreateBuilder()
-              .setContent(sb.toString())
-              .setSuppressEmbeds(true)
-              .setSuppressedNotifications(true);
+                .setContent(sb.toString())
+                .setSuppressEmbeds(true)
+                .setSuppressedNotifications(true);
 
             event.getHook().sendMessage(msgBuilder.build()).queue();
         }
