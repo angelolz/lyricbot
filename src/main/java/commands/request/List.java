@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import dataobjects.Request;
 import main.LoggerManager;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import repo.RequestRepo;
@@ -43,11 +44,17 @@ public class List extends SlashCommand
             {
                 Request request = requests.get(i);
                 String title = request.getTitle().length() > 75 ? request.getTitle().substring(0, 72) + "..." : request.getTitle();
-                String name = event.getJDA().retrieveUserById(request.getUserId()).complete().getEffectiveName();
-                sb.append(String.format("%d. **__%s__** from %s%n", i+1, title, name));
+                String link = request.getLink();
+                String mention = event.getJDA().retrieveUserById(request.getUserId()).complete().getAsMention();
+                sb.append(String.format("%d. **[%s](%s)** from %s%n", i+1, title, link, mention));
             }
 
-            event.getHook().sendMessage(sb.toString()).queue();
+            MessageCreateBuilder msgBuilder = new MessageCreateBuilder()
+              .setContent(sb.toString())
+              .setSuppressEmbeds(true)
+              .setSuppressedNotifications(true);
+
+            event.getHook().sendMessage(msgBuilder.build()).queue();
         }
 
         catch(SQLException e)
