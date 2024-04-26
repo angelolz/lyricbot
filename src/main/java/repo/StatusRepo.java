@@ -9,16 +9,13 @@ import java.sql.SQLException;
 
 public class StatusRepo
 {
-    public static long getTime() throws SQLException
+    private static void createOpenStatus() throws SQLException
     {
-        String sql = "SELECT * FROM Status";
+        String sql = "INSERT INTO Status (open) VALUES(0)";
         try(Connection con = DatabaseManager.getDataSource().getConnection();
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery())
+            PreparedStatement pst = con.prepareStatement(sql))
         {
-            rs.next();
-
-            return rs.getLong("time");
+            pst.executeUpdate();
         }
     }
 
@@ -29,20 +26,12 @@ public class StatusRepo
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery())
         {
-            rs.next();
-
-            return rs.getBoolean("open");
-        }
-    }
-
-    public static void setTime(long time) throws SQLException
-    {
-        String sql = "UPDATE Status set time = ?";
-        try(Connection con = DatabaseManager.getDataSource().getConnection();
-            PreparedStatement pst = con.prepareStatement(sql))
-        {
-            pst.setLong(1, time);
-            pst.executeUpdate();
+            if(rs.next())
+                return rs.getBoolean("open");
+            else {
+                createOpenStatus();
+                return false;
+            }
         }
     }
 
