@@ -39,14 +39,15 @@ public class List extends SlashCommand
             }
 
             StringBuilder sb = new StringBuilder();
-            for(Request request : requests)
+            for(int i = 0; i < requests.size(); i++)
             {
+                Request request = requests.get(i);
                 String title = request.getTitle().length() > 75 ? request.getTitle().substring(0, 72) + "..." : request.getTitle();
                 String name = event.getJDA().retrieveUserById(request.getUserId()).complete().getEffectiveName();
-                sb.append(String.format("%-75s {%s}%n", title, name));
+                sb.append(String.format("%d. **__%s__** from %s%n", i+1, title, name));
             }
 
-            event.getHook().sendMessage("```\n" + sb + "\n```").queue();
+            event.getHook().sendMessage(sb.toString()).queue();
         }
 
         catch(SQLException e)
