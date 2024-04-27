@@ -5,12 +5,12 @@ import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import dataobjects.Metadata;
 import dataobjects.Request;
+import listeners.ReadyListener;
 import main.LoggerManager;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import repo.LyricerRepo;
 import repo.RequestRepo;
-import repo.StatusRepo;
 import utils.Statics;
 import utils.Utils;
 
@@ -51,7 +51,7 @@ public class Set extends SlashCommand
 
         try
         {
-            if(!StatusRepo.isOpen())
+            if(!ReadyListener.isRequestsOpen())
             {
                 event.getHook().sendMessage("❌ | Song requests are closed.").queue();
                 return;

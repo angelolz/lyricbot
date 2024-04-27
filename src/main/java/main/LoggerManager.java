@@ -5,6 +5,7 @@ import lombok.Cleanup;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.utils.FileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,17 +51,22 @@ public class LoggerManager
         e.printStackTrace(pw);
 
         FileUpload fu = FileUpload.fromData(sw.toString().getBytes(), "stacktrace.txt");
-        jda.getTextChannelById("1118299850258268220").sendMessageEmbeds(embed.build()).addFiles(fu).queue();
-        logger.error("{}: {}", e.getClass().getName(), e.getMessage());
+
+        TextChannel exceptionChannel = jda.getTextChannelById(ConfigManager.getExceptionChannel());
+        if(exceptionChannel != null)
+        {
+            exceptionChannel.sendMessageEmbeds(embed.build()).addFiles(fu).queue();
+            logger.error("{}: {}", e.getClass().getName(), e.getMessage());
+        }
     }
 
     public static void sendLogMessage(LogLevel level, String message)
     {
         if(jda != null)
         {
-            jda.getTextChannelById("1118299870139265094")
-               .sendMessageFormat("```%n[%s] %s%n```", level.name().toUpperCase(), message)
-               .queue();
+            TextChannel logChannel = jda.getTextChannelById(ConfigManager.getLogChannel());
+            if(logChannel != null)
+                logChannel.sendMessageFormat("```%n[%s] %s%n```", level.name().toUpperCase(), message).queue();
         }
 
         switch(level)

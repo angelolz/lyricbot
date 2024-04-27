@@ -2,14 +2,14 @@ package main;
 
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import commands.*;
-import commands.ownerCommands.CheckRoles;
-import commands.ownerCommands.Rules;
+import commands.ownercommands.CheckRoles;
+import commands.ownercommands.Rules;
 import listeners.ButtonListener;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import listeners.ScheduledTasks;
+import listeners.ReadyListener;
 import listeners.SubmissionListener;
 
 public class BotManager
@@ -56,7 +56,7 @@ public class BotManager
                   .setStatus(OnlineStatus.DO_NOT_DISTURB)
                   .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS)
                   .setActivity(Activity.playing("loading!! | " + ConfigManager.getPrefix() + "help"))
-                  .addEventListeners(client.build(), new ScheduledTasks(), new SubmissionListener(), new ButtonListener())
+                  .addEventListeners(client.build(), new ReadyListener(), new SubmissionListener(), new ButtonListener())
                   .build();
     }
 }

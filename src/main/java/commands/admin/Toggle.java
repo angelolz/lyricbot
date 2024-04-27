@@ -2,12 +2,10 @@ package commands.admin;
 
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
-import main.LoggerManager;
+import listeners.ReadyListener;
 import net.dv8tion.jda.api.Permission;
-import repo.StatusRepo;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import utils.Statics;
-
-import java.sql.SQLException;
 
 public class Toggle extends SlashCommand
 {
@@ -26,17 +24,14 @@ public class Toggle extends SlashCommand
 
         event.deferReply().queue();
 
-        try
-        {
-            boolean newOpenStatus = !StatusRepo.isOpen();
-            StatusRepo.setOpen(newOpenStatus);
-            event.getHook().sendMessageFormat("✅ | Song requests are now **%s**. (will reflect in channel description within 10 minutes)", newOpenStatus ? "OPEN" : "CLOSED").queue();
-        }
+        boolean newOpenStatus = !ReadyListener.isRequestsOpen();
+        ReadyListener.setRequestsOpen(newOpenStatus);
 
-        catch(SQLException e)
-        {
-            event.getHook().setEphemeral(true).sendMessage("❌ | Unable to change song request status.").queue();
-            LoggerManager.logError(e, event.getCommandString(), event.getUser().getName(), event.getGuild());
-        }
+        String message = String.format("Song requests are **%s**.", newOpenStatus ? "OPEN" : "CLOSED");
+        TextChannel textChannel = event.getJDA().getTextChannelById(Statics.REQUEST_CHANNEL_ID);
+        if(textChannel != null)
+            textChannel.getManager().setTopic(message).queue();
+
+        event.getHook().sendMessage("✅ | " + message).queue();
     }
 }

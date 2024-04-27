@@ -3,7 +3,6 @@ package commands;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
-import main.CommandTracker;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 public class Ping extends SlashCommand
@@ -22,8 +21,6 @@ public class Ping extends SlashCommand
     @Override
     protected void execute(SlashCommandEvent event)
     {
-        CommandTracker.incrementSlashCount("ping");
-
         long time = System.currentTimeMillis();
 
         event.deferReply().queue();
@@ -39,8 +36,6 @@ public class Ping extends SlashCommand
     @Override
     protected void execute(CommandEvent event)
     {
-        CommandTracker.incrementTextCount("ping");
-
         MessageChannel channel = event.getChannel();
         long time = System.currentTimeMillis();
 

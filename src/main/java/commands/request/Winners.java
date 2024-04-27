@@ -52,10 +52,11 @@ public class Winners extends SlashCommand
                 .setTitle("Winner List for Season " + event.optLong(SEASON))
                 .setColor(Color.YELLOW);
 
-            for(Request request : winners)
+            for(int i = 0; i < winners.size(); i++)
             {
+                Request request = winners.get(i);
                 String mention = event.getJDA().retrieveUserById(request.getUserId()).complete().getAsMention();
-                embed.appendDescription(String.format("%s %s%n", mention, request.getTitle()));
+                embed.appendDescription(String.format("**%s.** %s (%s)%n", i+1, request.getTitle(), mention));
             }
 
             event.getHook().sendMessageEmbeds(embed.build()).queue();

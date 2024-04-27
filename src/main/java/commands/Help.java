@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
-import main.CommandTracker;
 import main.ConfigManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -24,8 +23,6 @@ public class Help extends SlashCommand
 	@Override
 	protected void execute(SlashCommandEvent event)
 	{
-		CommandTracker.incrementSlashCount("help");
-
 		event.getJDA().retrieveUserById(event.getClient().getOwnerId()).queue(
 			user -> {
 				MessageEmbed embed = getEmbed(user, event.getJDA().getSelfUser().getAvatarUrl(), event.getClient().getCommands());
@@ -37,7 +34,6 @@ public class Help extends SlashCommand
 	@Override
 	protected void execute(CommandEvent event)
 	{
-		CommandTracker.incrementTextCount("help");
 		String ownerId = event.getClient().getOwnerId();
 
 		event.getJDA().retrieveUserById(ownerId).queue(
