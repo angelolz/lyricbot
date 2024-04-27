@@ -54,8 +54,8 @@ public class Winners extends SlashCommand
 
             for(Request request : winners)
             {
-                String name = event.getJDA().retrieveUserById(request.getUserId()).complete().getEffectiveName();
-                embed.appendDescription(String.format("**%s** | %s%n", name, request.getTitle()));
+                String mention = event.getJDA().retrieveUserById(request.getUserId()).complete().getAsMention();
+                embed.appendDescription(String.format("%s %s%n", mention, request.getTitle()));
             }
 
             event.getHook().sendMessageEmbeds(embed.build()).queue();

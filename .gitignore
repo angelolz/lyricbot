@@ -3,6 +3,7 @@
 .settings/
 programs/
 roles/
+.vscode/
 
 *.class
 *.log
