@@ -16,4 +16,11 @@ For **1 Hour Challenge**-specfic server commands:
 - View all current song requests
 - View all past winners of the song wheel
 
+# Building
+- Remove the `.example` extension from the property files.
+- Fill in the empty fields in both property files.
+- Run all sql queries in the `tables.sql` file.
+- Run the main method of `main.LyricBot`.
+
+
 If you have any questions, feel free to ping me in the servers. :)
