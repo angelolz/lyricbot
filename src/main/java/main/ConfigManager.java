@@ -9,7 +9,7 @@ import java.util.Properties;
 public class ConfigManager
 {
     private static final String PREFIX = "lb!";
-    private static final String VERSION = "v1.9.0";
+    private static final String VERSION = "v1.9.1";
     @Getter
     private static String token;
     @Getter
@@ -22,6 +22,8 @@ public class ConfigManager
     private static String logChannel;
     @Getter
     private static String exceptionChannel;
+
+    private ConfigManager() {}
 
     public static void init() throws IOException
     {

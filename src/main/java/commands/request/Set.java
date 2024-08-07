@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import dataobjects.Metadata;
 import dataobjects.Request;
+import enums.LogLevel;
 import listeners.ReadyListener;
 import main.LoggerManager;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -14,6 +15,7 @@ import repo.RequestRepo;
 import utils.Statics;
 import utils.Utils;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -96,14 +98,23 @@ public class Set extends SlashCommand
         }
     }
 
-    private String getTitle(String url) throws Exception
+    private String getTitle(String url)
     {
-        String json = Utils.readURL(String.format("https://api.urlmeta.org/meta?url=%s", URLEncoder.encode(url, StandardCharsets.UTF_8)), false);
-        Metadata metadata = new Gson().fromJson(json, Metadata.class);
-        String title = metadata.getMeta().getTitle();
-        if(title.length() > 256)
-            return metadata.getMeta().getTitle().substring(0, 253) + "...";
-        else
-            return metadata.getMeta().getTitle();
+        try
+        {
+            String json = Utils.readURL(String.format("https://api.urlmeta.org/meta?url=%s", URLEncoder.encode(url, StandardCharsets.UTF_8)), false);
+            Metadata metadata = new Gson().fromJson(json, Metadata.class);
+            String title = metadata.getMeta().getTitle();
+            if(title.length() > 256)
+                return metadata.getMeta().getTitle().substring(0, 253) + "...";
+            else
+                return metadata.getMeta().getTitle();
+        }
+
+        catch(Exception e)
+        {
+            LoggerManager.sendLogMessage(LogLevel.WARN, String.format("Unable to get title for URL %s: %s", url, e));
+            return url;
+        }
     }
 }
