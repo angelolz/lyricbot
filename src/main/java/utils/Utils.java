@@ -14,6 +14,7 @@ public class Utils
     {
         URL url = new URL(string);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setConnectTimeout(10000);
         if(!youtube) con.setRequestProperty("authorization", ConfigManager.getUrlMetaApiKey());
         con.connect();
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream())))
