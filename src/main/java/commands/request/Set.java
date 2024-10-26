@@ -6,6 +6,7 @@ import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import dataobjects.Metadata;
 import dataobjects.Request;
 import dataobjects.YouTubeEmbed;
+import enums.LogLevel;
 import listeners.ReadyListener;
 import main.LoggerManager;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -15,6 +16,7 @@ import repo.RequestRepo;
 import utils.Statics;
 import utils.Utils;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -97,7 +99,9 @@ public class Set extends SlashCommand
         }
     }
 
-    private String getTitle(String url) throws Exception
+    private String getTitle(String url)
+    {
+        try
     {
         String json;
         String title;
@@ -119,5 +123,12 @@ public class Set extends SlashCommand
             return title.substring(0, 253) + "...";
         else
             return title;
+        }
+
+        catch(Exception e)
+        {
+            LoggerManager.sendLogMessage(LogLevel.WARN, String.format("Unable to get title for URL %s: %s", url, e));
+            return url;
+        }
     }
 }

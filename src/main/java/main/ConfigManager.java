@@ -23,6 +23,8 @@ public class ConfigManager
     @Getter
     private static String exceptionChannel;
 
+    private ConfigManager() {}
+
     public static void init() throws IOException
     {
         try(FileInputStream propFile = new FileInputStream("config.properties"))
