@@ -6,10 +6,17 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Utils
 {
+    private static final Pattern YOUTUBE_LINK_PATTERN = Pattern.compile(
+        "^(?:https?://)?(?:www\\.)?(?:youtube\\.com/(?:watch\\?v=|embed/|v/|.*?v=)|youtu\\.be/)([\\w-]{11})(?:\\S+)?$",
+        Pattern.CASE_INSENSITIVE
+    );
+
     public static String readURL(String string, boolean youtube) throws Exception
     {
         URL url = new URL(string);
@@ -59,12 +66,7 @@ public class Utils
         }
     }
 
-    public static boolean isValidInteger(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+    public static boolean isValidYouTubeLink(String url) {
+        return YOUTUBE_LINK_PATTERN.matcher(url).matches();
     }
 }

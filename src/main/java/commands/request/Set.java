@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.command.SlashCommand;
 import com.jagrosh.jdautilities.command.SlashCommandEvent;
 import dataobjects.Metadata;
 import dataobjects.Request;
+import dataobjects.YouTubeEmbed;
 import listeners.ReadyListener;
 import main.LoggerManager;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -98,12 +99,25 @@ public class Set extends SlashCommand
 
     private String getTitle(String url) throws Exception
     {
-        String json = Utils.readURL(String.format("https://api.urlmeta.org/meta?url=%s", URLEncoder.encode(url, StandardCharsets.UTF_8)), false);
-        Metadata metadata = new Gson().fromJson(json, Metadata.class);
-        String title = metadata.getMeta().getTitle();
-        if(title.length() > 256)
-            return metadata.getMeta().getTitle().substring(0, 253) + "...";
+        String json;
+        String title;
+        if(Utils.isValidYouTubeLink(url))
+        {
+            json = Utils.readURL(String.format("https://youtube.com/oembed?url=%s&format=json", URLEncoder.encode(url, StandardCharsets.UTF_8)), true);
+            YouTubeEmbed youTubeEmbed = new Gson().fromJson(json, YouTubeEmbed.class);
+            title = youTubeEmbed.getTitle();
+        }
+
         else
-            return metadata.getMeta().getTitle();
+        {
+            json = Utils.readURL(String.format("https://api.urlmeta.org/meta?url=%s", URLEncoder.encode(url, StandardCharsets.UTF_8)), false);
+            Metadata metadata = new Gson().fromJson(json, Metadata.class);
+            title = metadata.getMeta().getTitle();
+        }
+
+        if(title.length() > 256)
+            return title.substring(0, 253) + "...";
+        else
+            return title;
     }
 }
