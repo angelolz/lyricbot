@@ -52,7 +52,6 @@ public class Pick extends SlashCommand
             }
 
             WinnerRepo.addWinner(request, (int) event.optLong("season"));
-            LyricerRepo.updateBanned(request.getUserId(), true);
             RequestRepo.deleteRequest(request.getUserId());
 
             event.getHook().sendMessage("✅ | Added user to winner's list.").queue();
