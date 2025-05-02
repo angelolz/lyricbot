@@ -20,6 +20,7 @@ public class Set extends SlashCommand
 {
     private static final String CHANNEL_LINK = "channel-link";
     private static final String WATERMARK = "watermark";
+    private static final String USER = "admin-only-user";
 
     public Set()
     {
@@ -29,6 +30,7 @@ public class Set extends SlashCommand
         List<OptionData> options = new ArrayList<>();
         options.add(new OptionData(OptionType.STRING, CHANNEL_LINK, "Link to your own YouTube channel or social media.", false));
         options.add(new OptionData(OptionType.ATTACHMENT, WATERMARK, "Image file of your own watermark, 2mb max file size, PNG only.", false));
+        options.add(new OptionData(OptionType.USER, USER, "DO NOT PUT ANYTHING HERE IF YOU'RE NOT ANGEL", false));
 
         this.options = options;
     }
@@ -38,6 +40,13 @@ public class Set extends SlashCommand
     {
         event.deferReply().queue();
 
+        if(event.optUser(USER) != null && !event.getUser().getId().equals(event.getClient().getOwnerId()))
+        {
+            event.getHook().sendMessage("❌ | You are not allowed to set links/watermarks for other users.").queue();
+            return;
+        }
+
+        long chosenUserId = event.optUser(USER) != null ? event.optUser(USER).getIdLong() : event.getUser().getIdLong();
         if(event.optString(CHANNEL_LINK) == null && event.optAttachment(WATERMARK) == null)
         {
             event.getHook().sendMessage("❌ | You did not provide a link **OR** a watermark.").queue();
@@ -49,19 +58,19 @@ public class Set extends SlashCommand
             if(!Utils.isValidUrl(event.optString(CHANNEL_LINK)))
                 event.getHook().sendMessage("❌ | The link you provided isn't valid!").queue();
             else
-                event.getHook().sendMessage(setLink(event.getUser().getIdLong(), event.optString(CHANNEL_LINK))).queue();
+                event.getHook().sendMessage(setLink(chosenUserId, event.optString(CHANNEL_LINK))).queue();
         }
 
-        if(event.optAttachment(WATERMARK) != null)
+        Message.Attachment attachment = event.optAttachment(WATERMARK);
+        if(attachment != null)
         {
-            Message.Attachment attachment = event.optAttachment(WATERMARK);
 
             if(attachment.getSize() > 2097152)
                 event.getHook().sendMessage("❌ | Your image is over 2mb. Please try again.").queue();
             else if(!attachment.getContentType().equalsIgnoreCase("image/png"))
                 event.getHook().sendMessageFormat("❌ | Only PNGs are accepted. Please try again. (expected: `image/png`, received: `%s`)", attachment.getContentType()).queue();
             else
-                setImage(event.getHook(), event.getUser().getId(), event.optAttachment(WATERMARK));
+                setImage(event.getHook(), chosenUserId, attachment);
         }
     }
 
@@ -91,7 +100,7 @@ public class Set extends SlashCommand
         }
     }
 
-    private void setImage(InteractionHook hook, String userId, Message.Attachment watermark)
+    private void setImage(InteractionHook hook, long userId, Message.Attachment watermark)
     {
         String fileName = "watermarks/" + userId + ".png";
         boolean exists = new File(fileName).exists();

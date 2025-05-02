@@ -9,7 +9,7 @@ import java.util.Properties;
 public class ConfigManager
 {
     private static final String PREFIX = "lb!";
-    private static final String VERSION = "v1.9.3";
+    private static final String VERSION = "v1.9.4";
     @Getter
     private static String token;
     @Getter
